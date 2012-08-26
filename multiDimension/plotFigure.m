@@ -14,20 +14,28 @@
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
-## prey
+## plotFigure
 
 ## Author: reAsOn <reason@For-Napkin>
-## Created: 2012-08-17
+## Author: LaySent <laysent@gmail.com>
+## Created: 2012-08-26
 
-function [f, position] = prey(pos, tryNumber, step)
+function [] = plotFigure (position, food)
 
-    for i=1:tryNumber
-        tempPosition = getNewPosition(pos, step);
-        if getFood(tempPosition) > getFood(pos)
-            break;
-        endif
-    endfor
-    position = tempPosition;
-    f = getFood(position);
+  if size(position)(2) == 1
+    plot(position, food, "*");
+    hold on;
+    tmp = -10:0.01:10;
+    plot(tmp, getFood(tmp));
+    hold off;
+    
+    % Stop for Observation
+    printf("Figure Done. Press ENTER to continue\n");
+    pause();
+
+  else
+    # TODO: code for 2-Dimension and higher
+    printf("Dimension is NOT 1, draw the figure is NOT supported\n");
+  endif
 
 endfunction

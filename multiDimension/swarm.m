@@ -22,7 +22,7 @@
 function [f, position] = swarm (pos, list, tryNumber, step, visual, \
 				jamming)
   position = pos;
-    f = food(pos);
+    f = getFood(pos);
     tmpList = [];
     fishNum = size(list)(1);
     for i = 1:fishNum
@@ -36,7 +36,7 @@ function [f, position] = swarm (pos, list, tryNumber, step, visual, \
 
     if size(tmpList)(1) != 0
         center = mean(tmpList);
-        if food(center)./size(tmpList)(1) > jamming * f
+        if getFood(center)./size(tmpList)(1) > jamming * f
             dirVector = center .- pos;
             direction = dirVector./norm(dirVector);
             position = getNewPosition(pos, step, direction);

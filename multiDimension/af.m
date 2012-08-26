@@ -17,15 +17,23 @@
 ## af
 
 ## Author: reAsOn <reason@For-Napkin>
+## Author: LaySent <laysent@gmail.com>
+## Keywords: Artificial Fish Algorithm
 ## Created: 2012-08-12
 
 function [ ret ] = af ()
 
 % algorithm start
+
+% clean the screen
+clc;
+
+% turn on the debug mode
+debug_on_warning (1);
 % parameter initialization
 
 % training set is stored in file data.mat with the name of data
-load data.mat;
+%load data.mat;
 
 tryNumber = 3;
 step = 0.25;
@@ -33,12 +41,15 @@ visual = 2.5;
 jamming = 0.526;
 iter = 0;
 ansBoard = -inf;
-positionBoard = ones(size(data)(2), 1) .* (-inf);
-fishNum = 100;
+positionBoard = ones(%size(data)(2)
+		     1, 1) .* (-inf);
+fishNum = 50;
 
 % initial fish position by random 
-position = rand(size(data)(2), fishNum);
-tmpPosition = zeros(size(data)(2), fishNum);
+position = rand(%size(data)(2)
+		fishNum, 1)*20-10;
+tmpPosition = zeros(%size(data)(2)
+		    fishNum, 1);
 food = zeros(1, fishNum);
 tmpFood = zeros(1, fishNum);
 % calculate the food of position
@@ -47,20 +58,23 @@ for i = 1: fishNum
     food(i) = getFood(position(i,:));
 endfor
 
+% check the initialization
+plotFigure(position, food);
+
 % main loop
 while(condition(iter, position, positionBoard, visual) == 1)
     for i = 1:fishNum
-        [tmpFood(i), tmpPosition(i)] = \
-        follow(position(i,:), position, tryNumber, step, visual, jamming)
+        [tmpFood(i), tmpPosition(i,:)] = \
+        follow(position(i,:), position, tryNumber, step, visual, jamming);
         if tmpFood(i) <= food(i)
-            [tmpFood(i), tmpPosition(i)] = \
+            [tmpFood(i), tmpPosition(i,:)] = \
             prey(position(i,:), tryNumber, step);
             if tmpFood(i) <= food(i)
-                [tmpFood(i), tmpPosition(i)] = \
+                [tmpFood(i), tmpPosition(i,:)] = \
                 swarm(position(i,:), position, tryNumber, step,
                 visual, jamming);
                 if tmpFood(i) <= food(i)
-                    tmpPosition = \
+                    tmpPosition(i,:) = \
                     getNewPosition(position(i,:), step);
                     tmpFood = getFood(tmpPosition);
                 endif
@@ -73,7 +87,10 @@ while(condition(iter, position, positionBoard, visual) == 1)
     endif
     position = tmpPosition;
     food = tmpFood;
+    
     iter = iter + 1;
+    printf("Iteration %d DONE\n",iter);
+    fflush(stdout);
 
 endwhile
 
@@ -82,7 +99,7 @@ printf("Board = %f\n",ansBoard);
 printf("Boardx = %f\n", ansBoardIndex);
 printf("Iter = %f\n",iter);
 
-% TODO: draw some figure
-
+% draw some figure
+plotFigure(position, food);
 
 endfunction

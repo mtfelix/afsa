@@ -17,38 +17,40 @@
 ## follow
 
 ## Author: reAsOn <reason@For-Napkin>
+## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-24
 
-function [f, position] = follow (pos, list, tryNumber, step, visual, jamming)
+function [f, position] = follow (pos, list, tryNumber, step, visual, \
+				 jamming)
   position = pos;
-    f = food(pos);
-    m = size(list)(1);
-    j = -1;
-    for i = 1:m
-        if isequal(pos, list(i,:))
-            continue;
-        endif
-        if getDistance(list(i,:),x) <= visual && food(list(i,:))>f
-            f = food(list(i,:);
-            j = i;
-        endif
-    endfor
-
-    friends = 0;
-    if j != -1
-        for i = 1:m
-            if i == j
-                continue;
-            endif
-            if getDistance(list(i,:),list(j,:)) <= visual
-                friends = friends + 1;
-            endif
-        endfor
-        if food(list(j,:)) > jamming * food(pos) * friends
-            dirVector = list(j,:) .- list(i,:);
-            direction = dirVector./norm(dirVector);
-            position = getNewPosition(pos, step, direction);
-        endif
+  f = getFood(pos);
+  m = size(list)(2);
+  j = -1;
+  for i = 1:m
+    if isequal(pos, list(i,:))
+      continue;
     endif
+    if getDistance(list(i,:),pos) <= visual && getFood(list(i,:))>f
+      f = getFood(list(i,:));
+      j = i;
+    endif
+  endfor
+  
+  friends = 0;
+  if j != -1
+    for i = 1:m
+      if i == j
+        continue;
+      endif
+      if getDistance(list(i,:),list(j,:)) <= visual
+        friends = friends + 1;
+      endif
+    endfor
+    if getFood(list(j,:)) > jamming * getFood(pos) * friends
+      dirVector = list(j,:) - pos;
+      direction = dirVector./norm(dirVector);
+      position = getNewPosition(pos, step, direction);
+    endif
+  endif
 
 endfunction
