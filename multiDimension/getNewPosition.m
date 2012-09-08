@@ -41,4 +41,11 @@ function [newPosition] = getNewPosition (position, step, direction)
         direction = randVector/norm(randVector);
     endif
     newPosition = position.+(step.*direction);
+    
+%    if newPosition > 10
+%      newPosition = 10;
+%    endif
+%    if newPosition < -10
+%      newPosition = -10;
+%    endif
 endfunction

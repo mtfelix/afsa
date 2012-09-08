@@ -34,22 +34,24 @@ debug_on_warning (1);
 
 % training set is stored in file data.mat with the name of data
 %load data.mat;
+load ex7data2.mat;
+data = X;
 
 tryNumber = 3;
-step = 0.25;
+step = 0.5;
 visual = 2.5;
 jamming = 0.526;
 iter = 0;
 ansBoard = -inf;
 positionBoard = ones(%size(data)(2)
-		     1, 1) .* (-inf);
+		     1, size(data)(2)) .* (-inf);
 fishNum = 50;
 
 % initial fish position by random 
 position = rand(%size(data)(2)
-		fishNum, 1)*20-10;
+		fishNum, size(data)(2))*20-10;
 tmpPosition = zeros(%size(data)(2)
-		    fishNum, 1);
+		    fishNum, size(data)(2));
 food = zeros(1, fishNum);
 tmpFood = zeros(1, fishNum);
 % calculate the food of position
@@ -57,6 +59,7 @@ tmpFood = zeros(1, fishNum);
 for i = 1: fishNum
     food(i) = getFood(position(i,:));
 endfor
+%checkFood(-10,10,1);
 
 % check the initialization
 plotFigure(position, food);
@@ -91,7 +94,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
     iter = iter + 1;
     printf("Iteration %d DONE\n",iter);
     fflush(stdout);
-
+%    plotFigure(position, food);
 endwhile
 
 % output final answer
@@ -101,5 +104,4 @@ printf("Iter = %f\n",iter);
 
 % draw some figure
 plotFigure(position, food);
-
 endfunction

@@ -50,6 +50,7 @@ function [f, position] = follow (pos, list, tryNumber, step, visual, \
       dirVector = list(j,:) - pos;
       direction = dirVector./norm(dirVector);
       position = getNewPosition(pos, step, direction);
+      f = getFood(position);
     endif
   endif
 

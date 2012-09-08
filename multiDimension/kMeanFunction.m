@@ -22,5 +22,16 @@
 function [ ret ] = kMeanFunction (distance)
 %    ret = 1 ./ (1 + exp(1*distance-5));
 
-    ret = 1 ./ (1 + exp(1*abs(distance)));
+%  ret = 0;
+%  for i = 1:size(distance)(1)
+%    tmp = sqrt(distance(i,:).^2);
+%    if tmp <= 1
+%      ret += (1 - tmp / 1);
+%    endif
+%  endfor
+
+  ret = exp(-0.5 * sum(distance.^2, 2));
+
+%    ret = 1 ./ (1 + exp(1*abs(distance)));
+%    ret = 1 ./ (1 + exp(1*abs(distance)));
 endfunction

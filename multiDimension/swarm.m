@@ -40,6 +40,7 @@ function [f, position] = swarm (pos, list, tryNumber, step, visual, \
             dirVector = center .- pos;
             direction = dirVector./norm(dirVector);
             position = getNewPosition(pos, step, direction);
+	    f = getFood(position);
         endif
     endif
 
