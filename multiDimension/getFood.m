@@ -22,23 +22,24 @@
 
 % original form (only for single variable)
 %-----------------------
-function [y]=getFood(x)
-  y = sin(x)./(x);
-endfunction
+%function [y]=getFood(x)
+%  y = sin(x)./(x);
+%endfunction
 %-----------------------
 
 % classification form
 %-----------------------
-%function [food] = getFood(position)
-%    load data.mat;
-%    food = 0;
-%    % match the dimension of coordinate and data
-%    if length(position') != size(data)(2)
-%        printf("In food function: dimension not match!\n")
-%    else
-%        diff = data .- (ones(length(data),1) * position);
+function [food] = getFood(position)
+    load data.mat;
+    food = 0;
+    % match the dimension of coordinate and data
+    if size(position)(2) != size(data)(2)
+        printf("In food function: dimension not match!\n")
+    else
+        diff = data .- (ones(length(data),1) * position);
 %        distance_sum = sqrt(sum(diff.^2));
 %        food = kMeanFunction(distance_sum);
-%    end
-%endfunction
+	    food = sum(kMeanFunction(diff));
+    end
+endfunction
 %-----------------------

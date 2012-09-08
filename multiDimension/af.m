@@ -76,7 +76,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
                 if tmpFood(i) <= food(i)
                     tmpPosition(i,:) = \
                     getNewPosition(position(i,:), step);
-                    tmpFood = getFood(tmpPosition);
+                    tmpFood(i) = getFood(tmpPosition(i,:));
                 endif
             endif
         endif
@@ -96,7 +96,7 @@ endwhile
 
 % output final answer
 printf("Board = %f\n",ansBoard);
-printf("Boardx = %f\n", ansBoardIndex);
+printf("Boardx = %f\n", positionBoard);
 printf("Iter = %f\n",iter);
 
 % draw some figure

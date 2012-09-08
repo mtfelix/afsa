@@ -20,6 +20,7 @@
 ## Created: 2012-08-12
 
 function [ ret ] = kMeanFunction (distance)
-    ret = 1 ./ (1 + exp(1*distance-5));
+%    ret = 1 ./ (1 + exp(1*distance-5));
 
+    ret = 1 ./ (1 + exp(1*abs(distance)));
 endfunction

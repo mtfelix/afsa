@@ -24,10 +24,10 @@ function [] = plotFigure (position, food)
 
   if size(position)(2) == 1
     plot(position, food, "*");
-    hold on;
-    tmp = -10:0.01:10;
-    plot(tmp, getFood(tmp));
-    hold off;
+%    hold on;
+%    tmp = -10:0.01:10;
+%    plot(tmp, getFood(tmp));
+%    hold off;
     
     % Stop for Observation
     printf("Figure Done. Press ENTER to continue\n");
