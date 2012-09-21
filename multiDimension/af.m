@@ -66,23 +66,41 @@ plotFigure(position, food);
 
 % main loop
 while(condition(iter, position, positionBoard, visual) == 1)
-    for i = 1:fishNum
-        [tmpFood(i), tmpPosition(i,:)] = \
-        follow(position(i,:), position, tryNumber, step, visual, jamming);
-        if tmpFood(i) <= food(i)
+
+  for i = 1:fishNum
+    choice = 1;
+    while (choice <= 4)
+      switch(choice)
+	% the order of follow
+	  case 1:
+	    [tmpFood(i), tmpPosition(i, :)] = \
+		follow(position(i,:), position, tryNumber, step, \
+		       visual, jamming);
+	    break;
+	% the order of prey
+	  case 2:
             [tmpFood(i), tmpPosition(i,:)] = \
-            prey(position(i,:), tryNumber, step);
-            if tmpFood(i) <= food(i)
-                [tmpFood(i), tmpPosition(i,:)] = \
+		prey(position(i,:), tryNumber, step);	    
+	    break;
+	% the order of swarm
+	  case 3:
+            [tmpFood(i), tmpPosition(i,:)] = \
                 swarm(position(i,:), position, tryNumber, step,
-                visual, jamming);
-                if tmpFood(i) <= food(i)
-                    tmpPosition(i,:) = \
-                    getNewPosition(position(i,:), step);
-                    tmpFood(i) = getFood(tmpPosition(i,:));
-                endif
-            endif
-        endif
+                      visual, jamming);
+	    break;
+	% the order of random move
+	  case 4:
+            tmpPosition(i,:) = \
+                getNewPosition(position(i,:), step);
+            tmpFood(i) = getFood(tmpPosition(i,:));
+	    break;
+      endswitch
+      if tmpFood(i) <= food(i)
+	choice += 1;
+      else
+	break;
+      endif
+    endwhile
     endfor
     if ansBoard < max(tmpFood)
         [ansBoard, ansBoardIndex] = max(tmpFood);
