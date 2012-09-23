@@ -19,11 +19,12 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-17
 
-function [f, position] = prey(pos, tryNumber, step)
+function [f, position, unionFind] = prey(pos, fish, tryNumber, step, self, unionFind)
 
     for i=1:tryNumber
         tempPosition = getNewPosition(pos, step);
         if getFood(tempPosition) > getFood(pos)
+	  unionFind = UF_Break(unionFind, fish, self);
             break;
         endif
     endfor

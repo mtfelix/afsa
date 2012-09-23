@@ -37,7 +37,8 @@ function [food] = getFood(position)
     food = 0;
 % match the dimension of coordinate and data
     if size(position)(2) != size(data)(2)
-        printf("In food function: dimension not match!\n")
+        printf("In food function: dimension not match!\nwhere \
+	    size(position) = %d\n",size(position)(2));
     else
         diff = data .- (ones(length(data),1) * position);
 %        distance_sum = sqrt(sum(diff.^2));

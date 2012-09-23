@@ -19,11 +19,12 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-24
 
-function [f, position] = swarm (pos, list, tryNumber, step, visual, \
-				jamming)
+function [f, position, unionFind] = swarm (pos, list, tryNumber, step, visual, \
+				jamming, unionFind, self)
   position = pos;
     f = getFood(pos);
     tmpList = [];
+    tmpIter = [];
     fishNum = size(list)(1);
     for i = 1:fishNum
         if isequal(pos,list(i,:))
@@ -31,12 +32,16 @@ function [f, position] = swarm (pos, list, tryNumber, step, visual, \
         endif
         if getDistance(list(i,:), pos) <= visual
             temList = [tmpList; list(i,:)];
+	    tmpIter = [tmpIter; i];
         endif
     endfor
 
     if size(tmpList)(1) != 0
         center = mean(tmpList);
         if getFood(center)./size(tmpList)(1) > jamming * f
+	  for i = 1:size(tmpIter)(1)
+	    unionFind = UF_union(unionFind, tmpIter(i), self);
+	  endfor
             dirVector = center .- pos;
             direction = dirVector./norm(dirVector);
             position = getNewPosition(pos, step, direction);

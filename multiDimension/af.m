@@ -61,6 +61,9 @@ for i = 1: fishNum
 endfor
 %checkFood(-10,10,1);
 
+% Initialize the Union Find Part
+unionFind = UF_Create(fishNum);
+
 % check the initialization
 plotFigure(position, food);
 
@@ -72,28 +75,28 @@ while(condition(iter, position, positionBoard, visual) == 1)
     while (choice <= 4)
       switch(choice)
 	% the order of follow
-	  case 1:
-	    [tmpFood(i), tmpPosition(i, :)] = \
+	  case 1
+	    [tmpFood(i), tmpPosition(i, :), unionFind] = \
 		follow(position(i,:), position, tryNumber, step, \
-		       visual, jamming);
-	    break;
+		       visual, jamming, unionFind, i);
 	% the order of prey
-	  case 2:
-            [tmpFood(i), tmpPosition(i,:)] = \
-		prey(position(i,:), tryNumber, step);	    
-	    break;
+	  case 3
+            [tmpFood(i), tmpPosition(i,:), unionFind] = \
+		prey(position(i,:), position, tryNumber, step, i, unionFind);	    
 	% the order of swarm
-	  case 3:
-            [tmpFood(i), tmpPosition(i,:)] = \
+	  case 2
+            [tmpFood(i), tmpPosition(i,:), unionFind] = \
                 swarm(position(i,:), position, tryNumber, step,
-                      visual, jamming);
-	    break;
+                      visual, jamming, unionFind, i);
 	% the order of random move
-	  case 4:
+	  case 4
             tmpPosition(i,:) = \
                 getNewPosition(position(i,:), step);
             tmpFood(i) = getFood(tmpPosition(i,:));
-	    break;
+	    unionFind = UF_Break(unionFind, position, i);
+	% just in case
+	  otherwise
+	    printf("The Switch Operation Occurs Some Trouble\n");
       endswitch
       if tmpFood(i) <= food(i)
 	choice += 1;
@@ -122,4 +125,10 @@ printf("Iter = %f\n",iter);
 
 % draw some figure
 plotFigure(position, food);
+
+% check UF result
+result = UF_Check(unionFind);
+printf("Class = %d\n", size(result)(1));
+result'
+unionFind
 endfunction

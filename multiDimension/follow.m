@@ -20,8 +20,8 @@
 ## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-24
 
-function [f, position] = follow (pos, list, tryNumber, step, visual, \
-				 jamming)
+function [f, position, unionFind] = follow (pos, list, tryNumber, step, visual, \
+				 jamming, unionFind, self)
   position = pos;
   f = getFood(pos);
   m = size(list)(2);
@@ -47,6 +47,7 @@ function [f, position] = follow (pos, list, tryNumber, step, visual, \
       endif
     endfor
     if getFood(list(j,:)) > jamming * getFood(pos) * friends
+      unionFind = UF_Union(unionFind, list, j, self);
       dirVector = list(j,:) - pos;
       direction = dirVector./norm(dirVector);
       position = getNewPosition(pos, step, direction);
