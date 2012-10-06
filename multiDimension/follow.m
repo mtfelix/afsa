@@ -24,7 +24,7 @@ function [f, position, unionFind] = follow (pos, list, tryNumber, step, visual, 
 				 jamming, unionFind, self)
   position = pos;
   f = getFood(pos);
-  m = size(list)(2);
+  m = size(list)(1);
   j = -1;
   for i = 1:m
     if isequal(pos, list(i,:))
