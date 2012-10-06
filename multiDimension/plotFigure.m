@@ -20,7 +20,7 @@
 ## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-26
 
-function [] = plotFigure (position, food)
+function [] = plotFigure (position, food, iter)
 
   if size(position)(2) == 1
     plot(position, food, "*");
@@ -48,7 +48,6 @@ function [] = plotFigure (position, food)
     if size(position)(2) == 2      
       plot(position(:,1)', position(:,2)',"*");
       pause();
-%      pause();
 %      load ex7data2.mat;
 %      hold on;
 %      for i = 1:size(X)(1)

@@ -38,10 +38,10 @@ function [newPosition] = getNewPosition (position, step, direction)
     if nargin == 2
         dim = size(position)(2);
         randVector = rand(1, dim).-0.5;
-        direction = randVector/norm(randVector);
+        direction = randVector ./ norm(randVector);
     endif
     newPosition = position.+(step.*direction);
-    
+%    printf("%f --> %f\n",position,newPosition);
 %    if newPosition > 10
 %      newPosition = 10;
 %    endif

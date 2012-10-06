@@ -1,4 +1,5 @@
 function [list] = UF_Union(list, fish, p, q)
+%  printf("Union (%d,%d)\n",p,q);
   i = UF_Find(list, p);
   j = UF_Find(list, q);
   if i != j

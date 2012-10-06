@@ -1,4 +1,5 @@
 function [list] = UF_Break(list, fish, p)
+%  printf("Break %d\n",p);
   if list(p) == p
 %    max = -Inf;
 %    maxIter = -1;

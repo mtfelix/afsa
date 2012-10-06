@@ -24,14 +24,16 @@ function [f, position, unionFind] = follow (pos, list, tryNumber, step, visual, 
 				 jamming, unionFind, self)
   position = pos;
   f = getFood(pos);
+  tmpf = f;
   m = size(list)(1);
   j = -1;
   for i = 1:m
-    if isequal(pos, list(i,:))
+    %if isequal(pos, list(i,:))
+    if i == self
       continue;
     endif
-    if getDistance(list(i,:),pos) <= visual && getFood(list(i,:))>f
-      f = getFood(list(i,:));
+    if getDistance(list(i,:),pos) <= visual && getFood(list(i,:))>tmpf
+      tmpf = getFood(list(i,:));
       j = i;
     endif
   endfor
@@ -49,7 +51,7 @@ function [f, position, unionFind] = follow (pos, list, tryNumber, step, visual, 
     if getFood(list(j,:)) > jamming * getFood(pos) * friends
       unionFind = UF_Union(unionFind, list, j, self);
       dirVector = list(j,:) - pos;
-      direction = dirVector./norm(dirVector);
+      direction = dirVector./ norm(dirVector);
       position = getNewPosition(pos, step, direction);
       f = getFood(position);
     endif

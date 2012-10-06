@@ -40,7 +40,7 @@ data = X;
 tryNumber = 3;
 step = 0.5;
 visual = 2.5;
-jamming = 0.526;
+jamming = 0.0526;
 iter = 0;
 ansBoard = -inf;
 positionBoard = ones(%size(data)(2)
@@ -67,15 +67,17 @@ unionFind = UF_Create(fishNum);
 % check the initialization
 plotFigure(position, food);
 
+minClass = fishNum;
+
 % main loop
 while(condition(iter, position, positionBoard, visual) == 1)
 
   for i = 1:fishNum
     choice = 1;
-    while (choice <= 4)
+    while (choice <= 5)
       switch(choice)
 	% the order of follow
-	  case 1
+	  case 2
 	    [tmpFood(i), tmpPosition(i, :), unionFind] = \
 		follow(position(i,:), position, tryNumber, step, \
 		       visual, jamming, unionFind, i);
@@ -83,8 +85,9 @@ while(condition(iter, position, positionBoard, visual) == 1)
 	  case 3
             [tmpFood(i), tmpPosition(i,:), unionFind] = \
 		prey(position(i,:), position, tryNumber, step, i, unionFind);	    
+	  case 1
 	% the order of swarm
-	  case 2
+	  case 6
             [tmpFood(i), tmpPosition(i,:), unionFind] = \
                 swarm(position(i,:), position, tryNumber, step,
                       visual, jamming, unionFind, i);
@@ -94,6 +97,9 @@ while(condition(iter, position, positionBoard, visual) == 1)
                 getNewPosition(position(i,:), step);
             tmpFood(i) = getFood(tmpPosition(i,:));
 	    unionFind = UF_Break(unionFind, position, i);
+	% here means: use random move and didn't get a good result
+	  case 5
+	    printf("iter(%d):%d\n",i,choice);
 	% just in case
 	  otherwise
 	    printf("The Switch Operation Occurs Some Trouble\n");
@@ -101,6 +107,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
       if tmpFood(i) <= food(i)
 	choice += 1;
       else
+	printf("iter(%d):%d\n",i,choice);
 	break;
       endif
     endwhile
@@ -109,6 +116,13 @@ while(condition(iter, position, positionBoard, visual) == 1)
         [ansBoard, ansBoardIndex] = max(tmpFood);
         positionBoard = tmpPosition(ansBoardIndex);
     endif
+% the minClass would work!
+%    result = UF_Check(unionFind);
+%    if minClass > size(result)(1)
+%      minClass = size(result)(1)
+%      result = result'
+%      unionFind = unionFind
+%    endif
     position = tmpPosition;
     food = tmpFood;
     
