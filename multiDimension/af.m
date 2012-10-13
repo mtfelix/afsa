@@ -28,6 +28,10 @@ function [ ret ] = af ()
 % clean the screen
 clc;
 
+% clean log files
+system("mkdir -p log");
+system("rm -v log/*");
+
 % turn on the debug mode
 debug_on_warning (1);
 % parameter initialization
@@ -74,6 +78,10 @@ while(condition(iter, position, positionBoard, visual) == 1)
 
   for i = 1:fishNum
     choice = 1;
+
+    fileName = strcat("log", num2str(i));
+    fid = fopen(strcat("log/",fileName), "a+");
+
     while (choice <= 5)
       switch(choice)
 	% the order of follow
@@ -111,10 +119,13 @@ while(condition(iter, position, positionBoard, visual) == 1)
 	    printf("The Switch Operation Occurs Some Trouble\n");
       endswitch
       if tmpFood(i) <= food(i)
-	choice += 1;
+	    choice += 1;
       else
-	printf("iter(%d):%d\n",i,choice);
-	break;
+	    printf("iter(%d):%d\n",i,choice);
+        fprintf(fid, "choice %d", choice);
+        fprintf(fid, " --> position %f %f \n", tmpPosition(i,:));
+        fclose(fid);
+        break;
       endif
     endwhile
     endfor
@@ -137,6 +148,11 @@ while(condition(iter, position, positionBoard, visual) == 1)
     fflush(stdout);
 %    plotFigure(position, food);
 endwhile
+
+fileName = "logFinal";
+fid = fopen(strcat("log/",fileName), "w");
+fprintf(fid, "Full position matrix: \n");
+fprintf(fid, "%f %f \n", position');
 
 % output final answer
 printf("Board = %f\n",ansBoard);
