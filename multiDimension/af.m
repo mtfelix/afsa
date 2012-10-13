@@ -1,4 +1,4 @@
-## Copyright (C) 2012 reAsOn
+e## Copyright (C) 2012 reAsOn
 ## 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -65,10 +65,10 @@ endfor
 unionFind = UF_Create(fishNum);
 
 % check the initialization
-plotFigure(position, food);
+%plotFigure(position, food);
 
 minClass = fishNum;
-
+stepsOfPrey = zeros(fishNum , 1);
 % main loop
 while(condition(iter, position, positionBoard, visual) == 1)
 
@@ -78,25 +78,31 @@ while(condition(iter, position, positionBoard, visual) == 1)
       switch(choice)
 	% the order of follow
 	  case 2
-	    [tmpFood(i), tmpPosition(i, :), unionFind] = \
+	    [tmpFood(i), tmpPosition(i, :), unionFind, stepsOfPrey] = \
 		follow(position(i,:), position, tryNumber, step, \
-		       visual, jamming, unionFind, i);
+		       visual, jamming, unionFind, i, stepsOfPrey);
 	% the order of prey
 	  case 3
-            [tmpFood(i), tmpPosition(i,:), unionFind] = \
-		prey(position(i,:), position, tryNumber, step, i, unionFind);	    
+            [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
+		prey(position(i,:), position, tryNumber, step, visual, i, \
+		     unionFind, stepsOfPrey);	    
 	  case 1
 	% the order of swarm
 	  case 6
-            [tmpFood(i), tmpPosition(i,:), unionFind] = \
+            [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
                 swarm(position(i,:), position, tryNumber, step,
-                      visual, jamming, unionFind, i);
+                      visual, jamming, unionFind, i, stepsOfPrey);
 	% the order of random move
 	  case 4
             tmpPosition(i,:) = \
                 getNewPosition(position(i,:), step);
             tmpFood(i) = getFood(tmpPosition(i,:));
-	    unionFind = UF_Break(unionFind, position, i);
+	    if stepsOfPrey(i, 1) >= 1
+	      unionFind = UF_Break(unionFind, position, i);
+	      stepsOfPrey(i, 1) = 0;
+	    else
+	      stepsOfPrey(i, 1) += 1;
+	    endif
 	% here means: use random move and didn't get a good result
 	  case 5
 	    printf("iter(%d):%d\n",i,choice);
@@ -141,8 +147,10 @@ printf("Iter = %f\n",iter);
 plotFigure(position, food);
 
 % check UF result
-result = UF_Check(unionFind);
+[result, num] = UF_Check(unionFind);
 printf("Class = %d\n", size(result)(1));
 result'
 unionFind
+
+plotClass(unionFind, position, food);
 endfunction

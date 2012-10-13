@@ -19,13 +19,46 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-17
 
-function [f, position, unionFind] = prey(pos, fish, tryNumber, step, self, unionFind)
-
+function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step, \
+						      visual, self, \
+						      unionFind, \
+						      stepsOfPrey)
+  f = getFood(pos);  
+  m = size(fish)(1);
+  tmpf = f;
+  j = -1;
+  for i = 1:m
+    if i == self
+      continue;
+    endif
+    if getDistance(fish(i,:), pos) <= visual && getFood(fish(i,:)) > \
+	  tmpf
+      tmpf = getFood(fish(i,:));
+      j = i;
+    endif
+  endfor
     for i=1:tryNumber
-        tempPosition = getNewPosition(pos, step);
+      while 1
+	tempPosition = getNewPosition(pos, step);
+	if j != -1 && dot(tempPosition, fish(j,:)) < 0
+	  break;
+	else
+	  if j == -1
+	    break;
+	  else
+	    tempPosition = -1 .* tempPosition;
+	    break;
+	  endif
+	endif
+      endwhile
         if getFood(tempPosition) > getFood(pos)
-	  unionFind = UF_Break(unionFind, fish, self);
-            break;
+	  if stepsOfPrey(self, 1) >= 1
+	    unionFind = UF_Break(unionFind, fish, self);
+	    stepsOfPrey(self, 1) = 0;
+	  else
+	    stepsOfPrey(self, 1) += 1;
+	  endif
+          break;
         endif
     endfor
     position = tempPosition;

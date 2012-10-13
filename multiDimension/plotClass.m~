@@ -1,0 +1,14 @@
+function [] = plotClass(unionFind, position, food)
+  [ret, num] = UF_Check(unionFind);
+  for iter = 1:size(num)(1)
+    plotData = [];
+    for i = 1:size(unionFind)(2)
+      if UF_Connected(unionFind, iter, i)
+	plotData = [plotData; position(i,:)];
+      endif
+    endfor
+    plot(position(:,1)', position(:,2)', "*");
+    pause();
+  endfor
+
+endfunction

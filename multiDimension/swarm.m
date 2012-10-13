@@ -19,8 +19,8 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-24
 
-function [f, position, unionFind] = swarm (pos, list, tryNumber, step, visual, \
-				jamming, unionFind, self)
+function [f, position, unionFind, stepsOfPrey] = swarm (pos, list, tryNumber, step, visual, \
+				jamming, unionFind, self, stepsOfPrey)
   position = pos;
     f = getFood(pos);
     tmpList = [];
