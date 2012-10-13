@@ -28,6 +28,10 @@ function [ ret ] = af ()
 % clean the screen
 clc;
 
+% clean log files
+system("mkdir -p log");
+system("rm -v log/*");
+
 % turn on the debug mode
 debug_on_warning (1);
 % parameter initialization
@@ -44,14 +48,14 @@ jamming = 0.0526;
 iter = 0;
 ansBoard = -inf;
 positionBoard = ones(%size(data)(2)
-		     1, size(data)(2)) .* (-inf);
+             1, size(data)(2)) .* (-inf);
 fishNum = 50;
 
 % initial fish position by random 
 position = rand(%size(data)(2)
-		fishNum, size(data)(2))*20-10;
+        fishNum, size(data)(2))*20-10;
 tmpPosition = zeros(%size(data)(2)
-		    fishNum, size(data)(2));
+            fishNum, size(data)(2));
 food = zeros(1, fishNum);
 tmpFood = zeros(1, fishNum);
 % calculate the food of position
@@ -74,48 +78,58 @@ while(condition(iter, position, positionBoard, visual) == 1)
 
   for i = 1:fishNum
     choice = 1;
+
+    fileName = strcat("log",num2str(i));
+    fid = fopen(strcat("log/",fileName), "a+");
+
+
     while (choice <= 5)
       switch(choice)
-	% the order of follow
-	  case 2
-	    [tmpFood(i), tmpPosition(i, :), unionFind] = \
-		follow(position(i,:), position, tryNumber, step, \
-		       visual, jamming, unionFind, i);
-	% the order of prey
-	  case 3
+    % the order of follow
+      case 2
+        [tmpFood(i), tmpPosition(i, :), unionFind] = \
+        follow(position(i,:), position, tryNumber, step, \
+               visual, jamming, unionFind, i);
+    % the order of prey
+      case 3
             [tmpFood(i), tmpPosition(i,:), unionFind] = \
-		prey(position(i,:), position, tryNumber, step, i, unionFind);	    
-	  case 1
-	% the order of swarm
-	  case 6
+        prey(position(i,:), position, tryNumber, step, i, unionFind);
+      case 1
+    % the order of swarm
+      case 6
             [tmpFood(i), tmpPosition(i,:), unionFind] = \
                 swarm(position(i,:), position, tryNumber, step,
                       visual, jamming, unionFind, i);
-	% the order of random move
-	  case 4
+    % the order of random move
+      case 4
             tmpPosition(i,:) = \
                 getNewPosition(position(i,:), step);
             tmpFood(i) = getFood(tmpPosition(i,:));
-	    unionFind = UF_Break(unionFind, position, i);
-	% here means: use random move and didn't get a good result
-	  case 5
-	    printf("iter(%d):%d\n",i,choice);
-	% just in case
-	  otherwise
-	    printf("The Switch Operation Occurs Some Trouble\n");
+        unionFind = UF_Break(unionFind, position, i);
+    % here means: use random move and didn't get a good result
+      case 5
+        printf("iter(%d):%d\n",i,choice);
+    % just in case
+      otherwise
+        printf("The Switch Operation Occurs Some Trouble\n");
       endswitch
       if tmpFood(i) <= food(i)
-	choice += 1;
+        choice += 1;
       else
-	printf("iter(%d):%d\n",i,choice);
-	break;
+        printf("iter(%d):%d\n",i,choice);
+        fprintf(fid, "choice %d", choice);
+        fprintf(fid, " --> position %f %f \n",tmpPosition(i,:));
+        break;
       endif
     endwhile
-    endfor
-    if ansBoard < max(tmpFood)
-        [ansBoard, ansBoardIndex] = max(tmpFood);
-        positionBoard = tmpPosition(ansBoardIndex);
-    endif
+
+    fclose(fid);
+
+  endfor
+  if ansBoard < max(tmpFood)
+    [ansBoard, ansBoardIndex] = max(tmpFood);
+    positionBoard = tmpPosition(ansBoardIndex);
+  endif
 % the minClass would work!
 %    result = UF_Check(unionFind);
 %    if minClass > size(result)(1)
@@ -123,14 +137,23 @@ while(condition(iter, position, positionBoard, visual) == 1)
 %      result = result'
 %      unionFind = unionFind
 %    endif
-    position = tmpPosition;
-    food = tmpFood;
+  position = tmpPosition;
+  food = tmpFood;
     
-    iter = iter + 1;
-    printf("Iteration %d DONE\n",iter);
-    fflush(stdout);
+  iter = iter + 1;
+  printf("Iteration %d DONE\n",iter);
+  fflush(stdout);
 %    plotFigure(position, food);
+
+
 endwhile
+
+
+fileName = "logFinal";
+fid = fopen(strcat("log/",fileName), "w");
+fprintf(fid, "Full position matrix: \n");
+fprintf(fid, "%f %f \n", position');
+
 
 % output final answer
 printf("Board = %f\n",ansBoard);
