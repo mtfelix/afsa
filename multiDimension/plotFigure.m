@@ -46,7 +46,11 @@ function [] = plotFigure (position, food, iter)
   else
     # TODO: code for 2-Dimension and higher
     if size(position)(2) == 2      
+      plot(0,10,"-");
+      hold on;
       plot(position(:,1)', position(:,2)',"*");
+      plot(0, 0,"-");
+      hold off;
       pause();
 %      load ex7data2.mat;
 %      hold on;

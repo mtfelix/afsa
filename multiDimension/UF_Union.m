@@ -1,5 +1,9 @@
-function [list] = UF_Union(list, fish, p, q)
+# this time the order of p and q are really IMPORTANT
+function [list] = UF_Union(list, fish, p, q, iter)
 #  printf("Union (%d,%d)\n",p,q);
+  if iter <=40
+    list = UF_Break(list, fish, p);
+  endif
   i = UF_Find(list, p);
   j = UF_Find(list, q);
   if i != j

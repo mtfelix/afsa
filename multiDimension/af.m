@@ -27,7 +27,7 @@ function [ ret ] = af ()
 
 % clean the screen
 clc;
-
+clear;
 % clean log files
 system("mkdir -p log");
 system("rm -v log/*");
@@ -42,7 +42,7 @@ load ex7data2.mat;
 data = X;
 
 tryNumber = 3;
-step = 0.5;
+step = 0.8;
 visual = 2.5;
 jamming = 0.0526;
 iter = 0;
@@ -81,20 +81,20 @@ while(condition(iter, position, positionBoard, visual) == 1)
 
     fileName = strcat("log", num2str(i));
     fid = fopen(strcat("log/",fileName), "a+");
-
+    iter;
     while (choice <= 5)
       switch(choice)
     % the order of follow
-      case 2
+      case 1
         [tmpFood(i), tmpPosition(i, :), unionFind, stepsOfPrey] = \
         follow(position(i,:), position, tryNumber, step, \
-               visual, jamming, unionFind, i, stepsOfPrey);
+               visual, jamming, unionFind, i, stepsOfPrey, iter);
     % the order of prey
       case 3
             [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
         prey(position(i,:), position, tryNumber, step, visual, i, \
              unionFind, stepsOfPrey);        
-      case 1
+      case 2
     % the order of swarm
       case 6
             [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
@@ -105,7 +105,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
             tmpPosition(i,:) = \
                 getNewPosition(position(i,:), step);
             tmpFood(i) = getFood(tmpPosition(i,:));
-        if stepsOfPrey(i, 1) >= 1
+        if stepsOfPrey(i, 1) >= 3
           unionFind = UF_Break(unionFind, position, i);
           stepsOfPrey(i, 1) = 0;
         else
@@ -113,7 +113,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
         endif
     % here means: use random move and didn't get a good result
       case 5
-        printf("iter(%d):%d\n",i,choice);
+        %printf("iter(%d):%d\n",i,choice);
     % just in case
       otherwise
         printf("The Switch Operation Occurs Some Trouble\n");
@@ -121,7 +121,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
       if tmpFood(i) <= food(i)
         choice += 1;
       else
-        printf("iter(%d):%d\n",i,choice);
+        %printf("iter(%d):%d\n",i,choice);
         fprintf(fid, "choice %d", choice);
         fprintf(fid, " --> position %f %f \n", tmpPosition(i,:));
         break;

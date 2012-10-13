@@ -9,7 +9,16 @@ function [] = plotClass(unionFind, position, food)
       endif
     endfor
     printf("This is the class of %d\n", num(iter,1));
-    plot(plotData(:,1)', plotData(:,2)', "*");
+    if size(plotData)(1) == 1
+      printf("Skiped\n");
+    else
+      plot(0,0,"-");
+      hold on
+      plot(10,10,"-");
+      plot(position(:,1)', position(:,2)', "*");
+      plot(plotData(:,1)', plotData(:,2)', "2*");
+      hold off
+    endif
     pause();
   endfor
 

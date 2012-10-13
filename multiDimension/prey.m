@@ -52,7 +52,7 @@ function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step
 	endif
       endwhile
         if getFood(tempPosition) > getFood(pos)
-	  if stepsOfPrey(self, 1) >= 1
+	  if stepsOfPrey(self, 1) >= 3
 	    unionFind = UF_Break(unionFind, fish, self);
 	    stepsOfPrey(self, 1) = 0;
 	  else

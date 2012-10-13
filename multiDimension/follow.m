@@ -21,7 +21,7 @@
 ## Created: 2012-08-24
 
 function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, step, visual, \
-				 jamming, unionFind, self, stepsOfPrey)
+				 jamming, unionFind, self, stepsOfPrey, iter)
   position = pos;
   f = getFood(pos);
   tmpf = f;
@@ -49,7 +49,7 @@ function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, s
       endif
     endfor
     if getFood(list(j,:)) > jamming * getFood(pos) * friends
-      unionFind = UF_Union(unionFind, list, j, self);
+      unionFind = UF_Union(unionFind, list, self, j, iter);
       stepsOfPrey(self, 1) = 0;
       dirVector = list(j,:) - pos;
       direction = dirVector./ norm(dirVector);
