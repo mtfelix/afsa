@@ -21,9 +21,9 @@
 ## Created: 2012-08-24
 
 function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, step, visual, \
-				 jamming, unionFind, self, stepsOfPrey, iter)
+				 jamming, unionFind, self, stepsOfPrey, iter, data)
   position = pos;
-  f = getFood(pos);
+  f = getFood(pos,data);
   tmpf = f;
   m = size(list)(1);
   j = -1;
@@ -32,8 +32,8 @@ function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, s
     if i == self
       continue;
     endif
-    if getDistance(list(i,:),pos) <= visual && getFood(list(i,:))>tmpf
-      tmpf = getFood(list(i,:));
+    if getDistance(list(i,:),pos) <= visual && getFood(list(i,:),data)>tmpf
+      tmpf = getFood(list(i,:),data);
       j = i;
     endif
   endfor
@@ -48,13 +48,13 @@ function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, s
         friends = friends + 1;
       endif
     endfor
-    if getFood(list(j,:)) > jamming * getFood(pos) * friends
-      unionFind = UF_Union(unionFind, list, self, j, iter);
+    if getFood(list(j,:),data) > jamming * getFood(pos,data) * friends
+      unionFind = UF_Union(unionFind, list, self, j, iter,data);
       stepsOfPrey(self, 1) = 0;
       dirVector = list(j,:) - pos;
       direction = dirVector./ norm(dirVector);
       position = getNewPosition(pos, step, direction);
-      f = getFood(position);
+      f = getFood(position,data);
     endif
   endif
 

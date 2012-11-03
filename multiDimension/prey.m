@@ -22,8 +22,8 @@
 function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step, \
 						      visual, self, \
 						      unionFind, \
-						      stepsOfPrey)
-  f = getFood(pos);  
+						      stepsOfPrey,data)
+  f = getFood(pos,data);  
   m = size(fish)(1);
   tmpf = f;
   j = -1;
@@ -31,9 +31,9 @@ function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step
     if i == self
       continue;
     endif
-    if getDistance(fish(i,:), pos) <= visual && getFood(fish(i,:)) > \
+    if getDistance(fish(i,:), pos) <= visual && getFood(fish(i,:),data) > \
 	  tmpf
-      tmpf = getFood(fish(i,:));
+      tmpf = getFood(fish(i,:),data);
       j = i;
     endif
   endfor
@@ -51,7 +51,7 @@ function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step
 	  endif
 	endif
       endwhile
-        if getFood(tempPosition) > getFood(pos)
+        if getFood(tempPosition,data) > getFood(pos,data)
 	  if stepsOfPrey(self, 1) >= 3
 	    unionFind = UF_Break(unionFind, fish, self);
 	    stepsOfPrey(self, 1) = 0;
@@ -62,6 +62,6 @@ function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step
         endif
     endfor
     position = tempPosition;
-    f = getFood(position);
+    f = getFood(position,data);
 
 endfunction

@@ -29,8 +29,8 @@ function [ ret ] = af ()
 clc;
 clear;
 % clean log files
-system("mkdir -p log");
-system("rm -v log/*");
+%system("mkdir -p log");
+%system("rm -v log/*");
 
 % turn on the debug mode
 debug_on_warning (1);
@@ -61,7 +61,7 @@ tmpFood = zeros(1, fishNum);
 % calculate the food of position
 % TODO: let getFood function able to accept matrix
 for i = 1: fishNum
-    food(i) = getFood(position(i,:));
+    food(i) = getFood(position(i,:), data);
 endfor
 %checkFood(-10,10,1);
 
@@ -79,8 +79,8 @@ while(condition(iter, position, positionBoard, visual) == 1)
   for i = 1:fishNum
     choice = 1;
 
-    fileName = strcat("log", num2str(i));
-    fid = fopen(strcat("log/",fileName), "a+");
+%    fileName = strcat("log", num2str(i));
+%    fid = fopen(strcat("log/",fileName), "a+");
     iter;
     while (choice <= 5)
       switch(choice)
@@ -88,23 +88,23 @@ while(condition(iter, position, positionBoard, visual) == 1)
       case 1
         [tmpFood(i), tmpPosition(i, :), unionFind, stepsOfPrey] = \
         follow(position(i,:), position, tryNumber, step, \
-               visual, jamming, unionFind, i, stepsOfPrey, iter);
+               visual, jamming, unionFind, i, stepsOfPrey, iter, data);
     % the order of prey
       case 3
             [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
         prey(position(i,:), position, tryNumber, step, visual, i, \
-             unionFind, stepsOfPrey);        
+             unionFind, stepsOfPrey,data);        
       case 2
     % the order of swarm
       case 6
             [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
                 swarm(position(i,:), position, tryNumber, step,
-                      visual, jamming, unionFind, i, stepsOfPrey);
+                      visual, jamming, unionFind, i, stepsOfPrey,data);
     % the order of random move
       case 4
             tmpPosition(i,:) = \
                 getNewPosition(position(i,:), step);
-            tmpFood(i) = getFood(tmpPosition(i,:));
+            tmpFood(i) = getFood(tmpPosition(i,:),data);
         if stepsOfPrey(i, 1) >= 3
           unionFind = UF_Break(unionFind, position, i);
           stepsOfPrey(i, 1) = 0;
@@ -122,13 +122,13 @@ while(condition(iter, position, positionBoard, visual) == 1)
         choice += 1;
       else
         %printf("iter(%d):%d\n",i,choice);
-        fprintf(fid, "choice %d", choice);
-        fprintf(fid, " --> position %f %f \n", tmpPosition(i,:));
+%        fprintf(fid, "choice %d", choice);
+%        fprintf(fid, " --> position %f %f \n", tmpPosition(i,:));
         break;
       endif
 
     endwhile
-        fclose(fid);
+%        fclose(fid);
 
   endfor
   if ansBoard < max(tmpFood)
@@ -151,11 +151,11 @@ while(condition(iter, position, positionBoard, visual) == 1)
 %    plotFigure(position, food);
 endwhile
 
-fileName = "logFinal";
-fid = fopen(strcat("log/",fileName), "w");
-fprintf(fid, "Full position matrix: \n");
-fprintf(fid, "%f %f \n", position');
-fclose(fid);
+%fileName = "logFinal";
+%fid = fopen(strcat("log/",fileName), "w");
+%fprintf(fid, "Full position matrix: \n");
+%fprintf(fid, "%f %f \n", position');
+%fclose(fid);
 
 % output final answer
 printf("Board = %f\n",ansBoard);

@@ -29,10 +29,10 @@
 
 % classification form
 %-----------------------
-function [food] = getFood(position)
+function [food] = getFood(position,data)
 %    load data.mat;
-  load ex7data2.mat;
-  data = X;
+%  load ex7data2.mat;
+%  data = X;
 
     food = 0;
 % match the dimension of coordinate and data
