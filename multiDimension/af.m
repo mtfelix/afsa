@@ -133,7 +133,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
   endfor
   if ansBoard < max(tmpFood)
     [ansBoard, ansBoardIndex] = max(tmpFood);
-    positionBoard = tmpPosition(ansBoardIndex);
+    positionBoard = tmpPosition(ansBoardIndex,:);
   endif
 % the minClass would work!
 %    result = UF_Check(unionFind);
