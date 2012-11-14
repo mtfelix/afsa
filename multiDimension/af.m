@@ -53,7 +53,7 @@ iter = 0;
 ansBoard = -inf;gFoodCount = 0;
 positionBoard = ones(%size(data)(2)
              1, size(data)(2)) .* (-inf);
-fishNum = 50;
+fishNum = 15;
 
 % initial fish position by random 
 position = rand(%size(data)(2)
