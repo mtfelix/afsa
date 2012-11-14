@@ -1,8 +1,13 @@
 clc;
 
-a = 1000;
+tic;
+load ex7data2.mat;
+toc;
 
-for i = 999:-1:1
-  a = (1/(i + 1) - a) / 10;
-endfor
-a
+tic;
+data = X;
+toc;
+
+tic;
+getFood(X(1,:), data)
+toc;

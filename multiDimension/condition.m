@@ -1,6 +1,6 @@
 function [result] = condition(iter,x,boardx,visual)
   count = 0;
-  if iter<50
+  if iter<30
 %    tmp = x>=(boardx-visual);
 %    tmp += (x<=(boardx+visual));
 %    for i = 1:size(tmp)(2)

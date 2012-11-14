@@ -29,11 +29,13 @@
 
 % classification form
 %-----------------------
-function [food] = getFood(position,data)
+function [food, count] = getFood(position,data, count)
 %    load data.mat;
 %  load ex7data2.mat;
 %  data = X;
-
+	 if nargin == 3
+	    count+=1;
+	 endif
     food = 0;
 % match the dimension of coordinate and data
     if size(position)(2) != size(data)(2)

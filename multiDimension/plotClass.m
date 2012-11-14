@@ -1,6 +1,7 @@
-function [] = plotClass(unionFind, position, food)
+function [retCenter] = plotClass(unionFind, position, food, data)
   [ret, num] = UF_Check(unionFind);
   num
+  retCenter = [];
   for iter = 1:size(num)(1)
     plotData = [];
     for i = 1:size(unionFind)(2)
@@ -14,10 +15,15 @@ function [] = plotClass(unionFind, position, food)
     else
       plot(0,0,"-");
       hold on
+%      plot(data(:,1),data(:,2),'o');
       plot(10,10,"-");
       plot(position(:,1)', position(:,2)', "*");
       plot(plotData(:,1)', plotData(:,2)', "2*");
+      center = mean(plotData);
+      plot(center(1),center(2),'r*');
+      retCenter = [retCenter;center];
       hold off
+
     endif
     pause();
   endfor

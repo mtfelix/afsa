@@ -19,27 +19,34 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-17
 
-function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step, \
-						      visual, self, \
+function [f, position, unionFind, stepsOfPrey, gFoodCount] = prey(pos, fish, tryNumber, step, \
+						      visual,  \
 						      unionFind, \
-						      stepsOfPrey,data)
-  f = getFood(pos,data);  
+						      stepsOfPrey,data, \
+						      gFoodCount, food)
+%  [f,gFoodCount] = getFood(fish(pos,:),data, gFoodCount);  
+  f = food(pos);
   m = size(fish)(1);
   tmpf = f;
   j = -1;
   for i = 1:m
-    if i == self
+    if i == pos
       continue;
     endif
-    if getDistance(fish(i,:), pos) <= visual && getFood(fish(i,:),data) > \
-	  tmpf
-      tmpf = getFood(fish(i,:),data);
+    if getDistance(fish(i,:), fish(pos,:)) <= visual && \
+       food(i) > tmpf
+%      getFood(fish(i,:),data, gFoodCount) > tmpf
+
+
+%      [tmpf,gFoodCount] = getFood(fish(i,:),data, gFoodCount);
+	  tmpf = food(i);
       j = i;
     endif
+    gFoodCount+=1;
   endfor
     for i=1:tryNumber
       while 1
-	tempPosition = getNewPosition(pos, step);
+	tempPosition = getNewPosition(fish(pos,:), step);
 	if j != -1 && dot(tempPosition, fish(j,:)) < 0
 	  break;
 	else
@@ -51,17 +58,19 @@ function [f, position, unionFind, stepsOfPrey] = prey(pos, fish, tryNumber, step
 	  endif
 	endif
       endwhile
-        if getFood(tempPosition,data) > getFood(pos,data)
-	  if stepsOfPrey(self, 1) >= 3
-	    unionFind = UF_Break(unionFind, fish, self);
-	    stepsOfPrey(self, 1) = 0;
+%       if getFood(tempPosition,data) > getFood(fish(pos,:),data)
+      if getFood(tempPosition, data) > food(pos)
+	  if stepsOfPrey(pos, 1) >= 3
+	    unionFind = UF_Break(unionFind, fish, pos);
+	    stepsOfPrey(pos, 1) = 0;
 	  else
-	    stepsOfPrey(self, 1) += 1;
+	    stepsOfPrey(pos, 1) += 1;
 	  endif
           break;
         endif
+	gFoodCount+=1;
     endfor
     position = tempPosition;
-    f = getFood(position,data);
+    [f,gFoodCount] = getFood(position,data, gFoodCount);
 
 endfunction

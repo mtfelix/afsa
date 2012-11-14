@@ -20,22 +20,30 @@
 ## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-24
 
-function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, step, visual, \
-				 jamming, unionFind, self, stepsOfPrey, iter, data)
-  position = pos;
-  f = getFood(pos,data);
+function [f, position, unionFind, stepsOfPrey, getFoodCount] = follow (pos, list, tryNumber, step, visual, \
+				 jamming, unionFind, stepsOfPrey, \
+				 iter, data, getFoodCount, food)
+  position = list(pos,:);
+  f = food(pos);
+%  [f,getFoodCount] = getFood(list(pos,:),data, getFoodCount);
   tmpf = f;
   m = size(list)(1);
   j = -1;
   for i = 1:m
     %if isequal(pos, list(i,:))
-    if i == self
+    if i == pos
       continue;
     endif
-    if getDistance(list(i,:),pos) <= visual && getFood(list(i,:),data)>tmpf
-      tmpf = getFood(list(i,:),data);
+    if getDistance(list(i,:),list(pos,:)) <= visual && \
+       food(i) > tmpf
+%      getFood(list(i,:),data)>tmpf
+
+
+%      [tmpf, getFoodCount] = getFood(list(i,:),data, getFoodCount);
+       tmpf = food(i);
       j = i;
     endif
+%    getFoodCount+=1;
   endfor
   
   friends = 0;
@@ -48,14 +56,17 @@ function [f, position, unionFind, stepsOfPrey] = follow (pos, list, tryNumber, s
         friends = friends + 1;
       endif
     endfor
-    if getFood(list(j,:),data) > jamming * getFood(pos,data) * friends
-      unionFind = UF_Union(unionFind, list, self, j, iter,data);
-      stepsOfPrey(self, 1) = 0;
-      dirVector = list(j,:) - pos;
+%    if getFood(list(j,:),data) > jamming * getFood(list(pos,:),data) * friends
+    if food(j) > jamming * food(pos) * friends
+      [unionFind, getFoodCount] = UF_Union(unionFind, list, pos, j, \
+					   iter,data, getFoodCount, food);
+      stepsOfPrey(pos, 1) = 0;
+      dirVector = list(j,:) - list(pos,:);
       direction = dirVector./ norm(dirVector);
-      position = getNewPosition(pos, step, direction);
-      f = getFood(position,data);
+      position = getNewPosition(list(pos,:), step, direction);
+      [f,getFoodCount] = getFood(position,data, getFoodCount);
     endif
+%    getFoodCount += 2;
   endif
 
 endfunction

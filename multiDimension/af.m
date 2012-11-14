@@ -1,3 +1,4 @@
+#! /usr/bin/octave
 ## Copyright (C) 2012 reAsOn
 ## 
 ## This program is free software; you can redistribute it and/or modify
@@ -21,13 +22,15 @@
 ## Keywords: Artificial Fish Algorithm
 ## Created: 2012-08-12
 
-function [ ret ] = af ()
+%function [ ret ] = af ()
 
 % algorithm start
 
 % clean the screen
 clc;
 clear;
+% 计时开始
+tic;
 % clean log files
 %system("mkdir -p log");
 %system("rm -v log/*");
@@ -38,6 +41,7 @@ debug_on_warning (1);
 
 % training set is stored in file data.mat with the name of data
 %load data.mat;
+printf("new Version\n");
 load ex7data2.mat;
 data = X;
 
@@ -46,7 +50,7 @@ step = 0.8;
 visual = 2.5;
 jamming = 0.0526;
 iter = 0;
-ansBoard = -inf;
+ansBoard = -inf;gFoodCount = 0;
 positionBoard = ones(%size(data)(2)
              1, size(data)(2)) .* (-inf);
 fishNum = 50;
@@ -61,7 +65,7 @@ tmpFood = zeros(1, fishNum);
 % calculate the food of position
 % TODO: let getFood function able to accept matrix
 for i = 1: fishNum
-    food(i) = getFood(position(i,:), data);
+    [food(i),gFoodCount] = getFood(position(i,:), data, gFoodCount);
 endfor
 %checkFood(-10,10,1);
 
@@ -85,15 +89,18 @@ while(condition(iter, position, positionBoard, visual) == 1)
     while (choice <= 5)
       switch(choice)
     % the order of follow
-      case 1
-        [tmpFood(i), tmpPosition(i, :), unionFind, stepsOfPrey] = \
-        follow(position(i,:), position, tryNumber, step, \
-               visual, jamming, unionFind, i, stepsOfPrey, iter, data);
+	case 1
+%	     printf("%d follow\n",i);
+        [tmpFood(i), tmpPosition(i, :), unionFind, stepsOfPrey, gFoodCount] = \
+        follow(i, position, tryNumber, step, \
+               visual, jamming, unionFind, stepsOfPrey, iter, data, \
+	       gFoodCount, food);
     % the order of prey
       case 3
-            [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
-        prey(position(i,:), position, tryNumber, step, visual, i, \
-             unionFind, stepsOfPrey,data);        
+%	     printf("%d prey\n",i);
+            [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey, gFoodCount] = \
+        prey(i, position, tryNumber, step, visual, \
+             unionFind, stepsOfPrey,data, gFoodCount, food);        
       case 2
     % the order of swarm
       case 6
@@ -104,7 +111,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
       case 4
             tmpPosition(i,:) = \
                 getNewPosition(position(i,:), step);
-            tmpFood(i) = getFood(tmpPosition(i,:),data);
+            [tmpFood(i),gFoodCount] = getFood(tmpPosition(i,:),data,gFoodCount);
         if stepsOfPrey(i, 1) >= 3
           unionFind = UF_Break(unionFind, position, i);
           stepsOfPrey(i, 1) = 0;
@@ -113,7 +120,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
         endif
     % here means: use random move and didn't get a good result
       case 5
-        %printf("iter(%d):%d\n",i,choice);
+%        printf("iter(%d):%d\n",i,choice);
     % just in case
       otherwise
         printf("The Switch Operation Occurs Some Trouble\n");
@@ -121,7 +128,7 @@ while(condition(iter, position, positionBoard, visual) == 1)
       if tmpFood(i) <= food(i)
         choice += 1;
       else
-        %printf("iter(%d):%d\n",i,choice);
+%        printf("iter(%d):%d\n",i,choice);
 %        fprintf(fid, "choice %d", choice);
 %        fprintf(fid, " --> position %f %f \n", tmpPosition(i,:));
         break;
@@ -161,6 +168,9 @@ endwhile
 printf("Board = %f\n",ansBoard);
 printf("Boardx = %f\n", positionBoard);
 printf("Iter = %f\n",iter);
+printf("gFoodCount = %f\n",gFoodCount);
+% 计时结束
+toc;
 
 % draw some figure
 plotFigure(position, food);
@@ -171,5 +181,42 @@ printf("Class = %d\n", size(result)(1));
 result'
 unionFind
 
-plotClass(unionFind, position, food);
-endfunction
+% 以下代码检查fish被分类的情况, 并计算出中心位置
+% 仅作debug使用
+c = plotClass(unionFind, position, food, data)
+
+plot(data(:,1),data(:,2),'o');
+hold on;
+for i = 1:size(c)(1)
+    plot(c(i,1),c(i,2),'r*');
+endfor
+hold off;
+pause();
+
+% 以下代码主要检查data被实际聚类的情况
+% 仅作debug使用
+for i = 1:size(c)(1)
+    plotData = [];
+    for j = 1:size(data)(1)
+	flag = 1;	
+	for k = 1:size(c)(1)
+	    if k == i
+	       continue;
+	    endif
+	    if getDistance(c(i,:), data(j,:)) > getDistance(c(k,:),data(j,:))
+	       flag = 0;
+	       break;
+	    endif
+	endfor
+	if flag == 1
+	   plotData = [plotData; data(j,:)];
+	endif
+    endfor
+    plot(data(:,1),data(:,2),'o');
+    hold on;
+    plot(c(i,1),c(i,2),'g*');
+    plot(plotData(:,1),plotData(:,2),'ro');
+    hold off;
+    pause();
+endfor
+%endfunction

@@ -26,5 +26,6 @@
 
 function [distance] = getDistance (position1, position2)
     diff = position1 - position2;
-    distance = sqrt(sum(diff*diff'));
+    distance = sum(abs(diff));
+%    distance = sqrt(sum(diff*diff'));
 endfunction
