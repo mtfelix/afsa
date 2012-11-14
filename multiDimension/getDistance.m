@@ -26,6 +26,8 @@
 
 function [distance] = getDistance (position1, position2)
     diff = position1 - position2;
+% 以下使用曼哈顿距离
     distance = sum(abs(diff));
+% 以下使用欧式距离
 %    distance = sqrt(sum(diff*diff'));
 endfunction
