@@ -20,30 +20,38 @@
 ## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-24
 
-function [f, position, unionFind, stepsOfPrey, getFoodCount] = follow (pos, list, tryNumber, step, visual, \
-				 jamming, unionFind, stepsOfPrey, \
-				 iter, data, getFoodCount, food)
-  position = list(pos,:);
+function [f, thisFish] = follow (pos)	 
+  global iter;
+  global gFoodCount;
+  global position;
+  global step;
+  global visual;
+  global tryNumber;
+  global jamming;
+  global data;
+  global food;
+  global stepsOfPrey;
+  thisFish = position(pos,:);
   f = food(pos);
-%  [f,getFoodCount] = getFood(list(pos,:),data, getFoodCount);
+%  [f,gFoodCount] = getFood(position(pos,:),data, gFoodCount);
   tmpf = f;
-  m = size(list)(1);
+  m = size(position)(1);
   j = -1;
   for i = 1:m
-    %if isequal(pos, list(i,:))
+    %if isequal(pos, position(i,:))
     if i == pos
       continue;
     endif
-    if getDistance(list(i,:),list(pos,:)) <= visual && \
+    if getDistance(position(i,:),position(pos,:)) <= visual && \
        food(i) > tmpf
-%      getFood(list(i,:),data)>tmpf
+%      getFood(position(i,:),data)>tmpf
 
 
-%      [tmpf, getFoodCount] = getFood(list(i,:),data, getFoodCount);
+%      [tmpf, gFoodCount] = getFood(position(i,:),data, gFoodCount);
        tmpf = food(i);
       j = i;
     endif
-%    getFoodCount+=1;
+%    gFoodCount+=1;
   endfor
   
   friends = 0;
@@ -52,21 +60,20 @@ function [f, position, unionFind, stepsOfPrey, getFoodCount] = follow (pos, list
       if i == j
         continue;
       endif
-      if getDistance(list(i,:),list(j,:)) <= visual
+      if getDistance(position(i,:),position(j,:)) <= visual
         friends = friends + 1;
       endif
     endfor
-%    if getFood(list(j,:),data) > jamming * getFood(list(pos,:),data) * friends
+%    if getFood(position(j,:),data) > jamming * getFood(position(pos,:),data) * friends
     if food(j) > jamming * food(pos) * friends
-      [unionFind, getFoodCount] = UF_Union(unionFind, list, pos, j, \
-					   iter,data, getFoodCount, food);
+      UF_Union(pos, j);
       stepsOfPrey(pos, 1) = 0;
-      dirVector = list(j,:) - list(pos,:);
+      dirVector = position(j,:) - position(pos,:);
       direction = dirVector./ norm(dirVector);
-      position = getNewPosition(list(pos,:), step, direction);
-      [f,getFoodCount] = getFood(position,data, getFoodCount);
+      thisFish = getNewPosition(position(pos,:),direction);
+      f = getFood(thisFish);
     endif
-%    getFoodCount += 2;
+%    gFoodCount += 2;
   endif
 
 endfunction

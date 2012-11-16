@@ -1,24 +1,29 @@
 # this time the order of p and q are really IMPORTANT
-function [list, gFoodCount] = UF_Union(list, fish, p, q, iter,data, \
-				       gFoodCount, food)
+function [] = UF_Union(p, q)
 #  printf("Union (%d,%d)\n",p,q);
+  global gFoodCount;
+  global food;
+  global unionFind;
+  global position;
+  global iter;
+  global data;
   if iter <=28
-    list = UF_Break(list, fish, p);
+    UF_Break(p);
   endif
-  i = UF_Find(list, p);
-  j = UF_Find(list, q);
+  i = UF_Find(p);
+  j = UF_Find(q);
   if i != j
-    if size(fish(i,:))(2) == 1
-      printf("size(fish) == 1\n\twhere i = %d\n",i);
+    if size(position(i,:))(2) == 1
+      printf("size(position) == 1\n\twhere i = %d\n",i);
     endif
-    if size(fish(j,:))(2) == 1
-      printf("size(fish) == 1\n\twhere i = %d\n",j);
+    if size(position(j,:))(2) == 1
+      printf("size(position) == 1\n\twhere i = %d\n",j);
     endif
-    if getFood(fish(i,:),data) < getFood(fish(j,:),data)
+    if getFood(position(i,:)) < getFood(position(j,:))
 %    if food(i) < food(j)
-      list(i) = j;
+      unionFind(i) = j;
     else
-      list(j) = i;
+      unionFind(j) = i;
     endif
     gFoodCount+=2;
   endif

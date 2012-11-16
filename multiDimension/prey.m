@@ -19,26 +19,31 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-17
 
-function [f, position, unionFind, stepsOfPrey, gFoodCount] = prey(pos, fish, tryNumber, step, \
-						      visual,  \
-						      unionFind, \
-						      stepsOfPrey,data, \
-						      gFoodCount, food)
+function [f, thisFish] = prey(pos)
 %  [f,gFoodCount] = getFood(fish(pos,:),data, gFoodCount);  
+  global position;
+  global tryNumber;
+  global step;
+  global visual;
+  global unionFind;
+  global data;
+  global gFoodCount;
+  global food;
+  global stepsOfPrey;
   f = food(pos);
-  m = size(fish)(1);
+  m = size(position)(1);
   tmpf = f;
   j = -1;
   for i = 1:m
     if i == pos
       continue;
     endif
-    if getDistance(fish(i,:), fish(pos,:)) <= visual && \
+    if getDistance(position(i,:), position(pos,:)) <= visual && \
        food(i) > tmpf
-%      getFood(fish(i,:),data, gFoodCount) > tmpf
+%      getFood(position(i,:),data, gFoodCount) > tmpf
 
 
-%      [tmpf,gFoodCount] = getFood(fish(i,:),data, gFoodCount);
+%      [tmpf,gFoodCount] = getFood(position(i,:),data, gFoodCount);
 	  tmpf = food(i);
       j = i;
     endif
@@ -46,8 +51,8 @@ function [f, position, unionFind, stepsOfPrey, gFoodCount] = prey(pos, fish, try
   endfor
     for i=1:tryNumber
       while 1
-	tempPosition = getNewPosition(fish(pos,:), step);
-	if j != -1 && dot(tempPosition, fish(j,:)) < 0
+	tempPosition = getNewPosition(position(pos,:), step);
+	if j != -1 && dot(tempPosition, position(j,:)) < 0
 	  break;
 	else
 	  if j == -1
@@ -58,10 +63,10 @@ function [f, position, unionFind, stepsOfPrey, gFoodCount] = prey(pos, fish, try
 	  endif
 	endif
       endwhile
-%       if getFood(tempPosition,data) > getFood(fish(pos,:),data)
+%       if getFood(tempPosition,data) > getFood(position(pos,:),data)
       if getFood(tempPosition, data) > food(pos)
 	  if stepsOfPrey(pos, 1) >= 3
-	    unionFind = UF_Break(unionFind, fish, pos);
+	    UF_Break(pos);
 	    stepsOfPrey(pos, 1) = 0;
 	  else
 	    stepsOfPrey(pos, 1) += 1;
@@ -70,7 +75,6 @@ function [f, position, unionFind, stepsOfPrey, gFoodCount] = prey(pos, fish, try
         endif
 	gFoodCount+=1;
     endfor
-    position = tempPosition;
-    [f,gFoodCount] = getFood(position,data, gFoodCount);
-
+    thisFish = tempPosition;
+    f = getFood(thisFish);
 endfunction

@@ -34,8 +34,9 @@
 %  endif
 %endfunction
 
-function [newPosition] = getNewPosition (position, step, direction)
-    if nargin == 2
+function [newPosition] = getNewPosition (position, direction)
+    global step;
+    if nargin == 1
         dim = size(position)(2);
         randVector = rand(1, dim).-0.5;
         direction = randVector ./ norm(randVector);

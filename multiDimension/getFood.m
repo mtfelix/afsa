@@ -29,14 +29,14 @@
 
 % classification form
 %-----------------------
-function [food, count] = getFood(position,data, count)
+function [food] = getFood(position)
 %    load data.mat;
 %  load ex7data2.mat;
 %  data = X;
-	 if nargin == 3
-	    count+=1;
-	 endif
-    food = 0;
+  global gFoodCount;
+  global data;
+  gFoodCount += 1;
+  food = 0;
 % match the dimension of coordinate and data
     if size(position)(2) != size(data)(2)
         printf("In food function: dimension not match!\nwhere \

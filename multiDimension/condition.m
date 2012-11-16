@@ -1,4 +1,5 @@
 function [result] = condition(iter,x,boardx,visual)
+  global iter;
   count = 0;
   if iter<30
 %    tmp = x>=(boardx-visual);
