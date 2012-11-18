@@ -45,7 +45,7 @@ load ex7data2.mat;
 global data = X;
 
 global tryNumber = 3;
-global step = 0.8;
+global step = 0.5;
 global visual = 2.5;
 global jamming = 0.0526;
 global iter = 0;
@@ -53,11 +53,17 @@ global gFoodCount = 0;
 ansBoard = -inf;
 positionBoard = ones(%size(data)(2)
              1, size(data)(2)) .* (-inf);
-fishNum = 15;
+fishNum = 16;
 
 % initial fish position by random 
-global position = rand(%size(data)(2)
-        fishNum, size(data)(2))*20-10;
+%global position = rand(%size(data)(2)
+%        fishNum, size(data)(2))*20-10;
+global position = [
+		   0, 0;   2.5, 0;   5,   0;   7.5, 0;
+		   0, 2.5; 2.5, 2.5; 5,   2.5; 10,  5;
+		   0, 5;   2.5, 5;   7.5, 5;   5,   7.5;
+		   0, 7.5; 2.5, 7.5; 5,   7.5; 10,  10
+		  ];
 tmpPosition = zeros(%size(data)(2)
             fishNum, size(data)(2));
 global food = zeros(1, fishNum);

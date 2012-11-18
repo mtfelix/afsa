@@ -1,7 +1,7 @@
 function [result] = condition(iter,x,boardx,visual)
   global iter;
   count = 0;
-  if iter<30
+  if iter<10
 %    tmp = x>=(boardx-visual);
 %    tmp += (x<=(boardx+visual));
 %    for i = 1:size(tmp)(2)

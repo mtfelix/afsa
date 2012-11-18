@@ -42,6 +42,18 @@ function [newPosition] = getNewPosition (position, direction)
         direction = randVector ./ norm(randVector);
     endif
     newPosition = position.+(step.*direction);
+    if newPosition(1,1) < 0
+      newPosition(1,1) *= -1;
+    end
+    if newPosition(1,2) < 0
+      newPosition(1,2) *= -1;
+    end
+    if newPosition(1,1) > 8
+       newPosition(1,1) -= (newPosition(1,1) - 8) * 2;
+    end
+    if newPosition(1,2) > 8
+      newPosition(1,2) -= (newPosition(1,2) - 8) * 2;
+    end
 %    printf("%f --> %f\n",position,newPosition);
 %    if newPosition > 10
 %      newPosition = 10;
