@@ -1,6 +1,7 @@
+%% ==================== 说明 ====================
+%  本函数主要用于初始化一组用于并查集计算的数组
+%
 function [list] = UF_Create(N)
-  list = zeros(1, N);
-  for i = 1:N
-    list(i) = i;
-  endfor
+%% 初始化时, 并查集要求元素值等于其下标值
+  list = 1 : N
 endfunction
