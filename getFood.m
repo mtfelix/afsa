@@ -45,7 +45,7 @@ function [food] = getFood(position)
         diff = data .- (ones(length(data),1) * position);
 %        distance_sum = sqrt(sum(diff.^2));
 %        food = kMeanFunction(distance_sum);
-	food = sum(kMeanFunction(diff));
+	food = sum(gauss(diff));
     end
 endfunction
 %-----------------------
