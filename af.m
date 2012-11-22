@@ -62,6 +62,9 @@ global fishNum = 16;
 %% maxIter是迭代的上限
 global maxIter = 10
 
+%% defineRange是定义域
+global defineRange = [0, 7.5; 0, 7.5];
+
 %% gFoodCount变量用于存储getFood函数被调用的次数
 %  仅在需要调试的时候使用
 %
@@ -84,7 +87,7 @@ global gFoodCount = 0;
 %% 以下使用均匀分布(非以概率分布)
 %  generateGrid函数的使用说明见该文件
 %
-global position = generateGrid([0,7.5;0,7.5],4);
+global position = generateGrid(defineRange, 4);
 
 %% ========== 初始化食物浓度值 ==========
 %  NOTE: 

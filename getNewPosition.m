@@ -36,7 +36,8 @@
 
 function [newPosition] = getNewPosition (position, direction)
     global step;
-    bound = [0,8;0,8];
+    global defineRange;
+    newPosition = zeros(1, size(position)(2));
     if nargin == 1
         dim = size(position)(2);
         randVector = rand(1, dim).-0.5;
@@ -44,11 +45,11 @@ function [newPosition] = getNewPosition (position, direction)
     endif
     newPosition = position.+(step.*direction);
     for i = 1:size(newPosition(1,:))(2)
-	if newPosition(1, i) < bound(i, 1)
-	   newPosition(1, i) -= (newPosition(1, i) - bound(i, 1)) * 2;
+	if newPosition(1, i) < defineRange(i, 1)
+	   newPosition(1, i) -= (newPosition(1, i) - defineRange(i, 1)) * 2;
 	endif
-	if newPosition(1, i) > bound(i, 2)
-	   newPosition(1, i) -= (newPosition(1, i) - bound(i, 2)) * 2;
+	if newPosition(1, i) > defineRange(i, 2)
+	   newPosition(1, i) -= (newPosition(1, i) - defineRange(i, 2)) * 2;
 	endif
     endfor
 %    printf("%f --> %f\n",position,newPosition);
