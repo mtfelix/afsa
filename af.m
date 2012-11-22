@@ -60,7 +60,7 @@ global iter = 0;
 global fishNum = 16;
 
 %% maxIter是迭代的上限
-global maxIter = 10
+global maxIter = 15
 
 %% defineRange是定义域
 global defineRange = [0, 7.5; 0, 7.5];
@@ -189,9 +189,10 @@ while(condition() == 1)
 %  1. follow
 %  2. 暂时为空
 %  3. prey
-%  4. random move
+%  4. 暂时为空
 %  5. 用于调试
 %  6. swarm(不会被执行)
+%  7. random move
 %  其他(不会被执行)
 %
     while (choice <= 5)
@@ -218,15 +219,17 @@ while(condition() == 1)
           [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
           swarm(position(i,:), position, tryNumber, step,
 		visual, jamming, unionFind, i, stepsOfPrey,data);
-%% ========== 执行random move ==========
-%  执行顺序为4
-%% NOTE:
-%  random move应该和prey进行合并
-%
 	case 4
+%% 这是一条空语句, case 2未执行任何代码	     
+%% ========== 执行random move ==========
+%  执行顺序为7(本语句不会被执行)
+%% NOTE:
+%  random move已和prey进行合并
+%
+	case 7
           tmpPosition(i,:) = getNewPosition(position(i,:));
           tmpFood(i) = getFood(tmpPosition(i,:));
-          if stepsOfPrey(i, 1) >= 1
+          if stepsOfPrey(i, 1) >= maxPreyNum
             UF_Break(i);
             stepsOfPrey(i, 1) = 0;
           else

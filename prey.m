@@ -20,7 +20,8 @@
 ## Created: 2012-08-17
 
 function [f, thisFish] = prey(pos)
-%  [f,gFoodCount] = getFood(fish(pos,:),data, gFoodCount);  
+%% ========== 声明全局变量 ==========
+%
   global position;
   global tryNumber;
   global step;
@@ -30,51 +31,45 @@ function [f, thisFish] = prey(pos)
   global gFoodCount;
   global food;
   global stepsOfPrey;
+  global fishNum;
+  global maxPreyNum
+
+%% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   f = food(pos);
-  m = size(position)(1);
-  tmpf = f;
-  j = -1;
-  for i = 1:m
-    if i == pos
-      continue;
-    endif
-    if getDistance(position(i,:), position(pos,:)) <= visual && \
-       food(i) > tmpf
-%      getFood(position(i,:),data, gFoodCount) > tmpf
+  thisFish = position(pos,:);
 
+%% 进行最多tryNumber次的试验
+  for i=1:tryNumber
 
-%      [tmpf,gFoodCount] = getFood(position(i,:),data, gFoodCount);
-	  tmpf = food(i);
-      j = i;
-    endif
+%% 获取新的位置
+    tempPosition = getNewPosition(position(pos,:));
+
+%% 判断新的位置是否更加合理
+    if getFood(tempPosition(1,:), data) > food(pos)
+
+%% 若更加合理,则朝该位置移动,并做如下工作
+%  判断连续执行prey的次数是否达到规定的上限
+%  若达到上限, 则执行UF_Break语句
+%  否则, 次数加一
+%  同时, 将结果存储到返回值中并退出循环
+%
+      if stepsOfPrey(pos, 1) >= maxPreyNum
+	UF_Break(pos);
+	stepsOfPrey(pos, 1) = 0;
+      else
+	stepsOfPrey(pos, 1) += 1;
+      endif
+
+%% 保存这次的结果 
+      thisFish = tempPosition;
+      f = getFood(thisFish);
+
+      break
+
+    endif  % if getFood(tempPosition, data) > food(pos)
+
     gFoodCount+=1;
-  endfor
-    for i=1:tryNumber
-      while 1
-	tempPosition = getNewPosition(position(pos,:), step);
-	if j != -1 && dot(tempPosition, position(j,:)) < 0
-	  break;
-	else
-	  if j == -1
-	    break;
-	  else
-	    tempPosition = -1 .* tempPosition;
-	    break;
-	  endif
-	endif
-      endwhile
-%       if getFood(tempPosition,data) > getFood(position(pos,:),data)
-      if getFood(tempPosition, data) > food(pos)
-	  if stepsOfPrey(pos, 1) >= 3
-	    UF_Break(pos);
-	    stepsOfPrey(pos, 1) = 0;
-	  else
-	    stepsOfPrey(pos, 1) += 1;
-	  endif
-          break;
-        endif
-	gFoodCount+=1;
-    endfor
-    thisFish = tempPosition;
-    f = getFood(thisFish);
+
+  endfor   % for i=1:tryNumber
+
 endfunction

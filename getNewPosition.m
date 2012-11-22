@@ -19,21 +19,6 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-08-17
 
-% previous version
-%function [new_x] = getNewX(x,step,position)
-%  if position > 0
-%    new_x = x + step;
-%  else
-%    new_x = x - step;
-%  endif
-%  if new_x>10
-%    new_x=10;
-%  endif
-%  if new_x<-10
-%    new_x=-10;
-%  endif
-%endfunction
-
 function [newPosition] = getNewPosition (position, direction)
     global step;
     global defineRange;
