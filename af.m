@@ -22,12 +22,14 @@
 ## Keywords: Artificial Fish Algorithm
 ## Created: 2012-08-12
 
+function [ ret ] = af()
 %% ==================== 初始配置 ==================== 
 %  以下代码用于进行程序运行环境的初始配置
 % 
 
 %% 清理运行环境
-clc; clear;%close all;
+clc;
+%clear;%close all;
 
 %% 打开debug模式
 debug_on_warning (1);
@@ -38,32 +40,32 @@ debug_on_warning (1);
 
 %% ========== 以下参数考虑转移 ==========
 %
-load ex7data2.mat;
-global data = X;
+%load ex7data2.mat;
+%global data = X;
 
 %% tryNUmber表示prey执行的最高次数
-global tryNumber = 3;
+%global tryNumber = 3;
 
 %% step表示步长
-global step = 0.5;
+%global step = 0.5;
 
 %% visual为视阈
-global visual = 2.5;
+%global visual = 2.5;
 
 %% jamming是拥挤因子
-global jamming = 0.1;
+%global jamming = 0.1;
 
 %% iter是已经迭代的步数
 global iter = 0;
 
 %% fishNum是鱼的数量
-global fishNum = 16;
+%global fishNum = 16;
 
 %% maxIter是迭代的上限
-global maxIter = 15
+%global maxIter = 15
 
 %% defineRange是定义域
-global defineRange = [0, 7.5; 0, 7.5];
+%global defineRange = [0, 7.5; 0, 7.5];
 
 %% gFoodCount变量用于存储getFood函数被调用的次数
 %  仅在需要调试的时候使用
@@ -351,4 +353,4 @@ pause();
 %    hold off;
 %    pause();
 %endfor
-%endfunction
+endfunction
