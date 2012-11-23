@@ -31,6 +31,21 @@ function [ ret ] = af()
 clc;
 %clear;%close all;
 
+% 声明全局变量
+global data;
+global tryNumber;
+global step;
+global visual;
+global jamming;
+global iter;
+global fishNum;
+global maxIter;
+global defineRange;
+global gFoodCount;
+global getFood;
+global plotFigure;
+global feature_uf;
+
 %% ========== 初始化鱼群分布 ==========
 %  初始化的方式主要有两种
 %  一种是随机分布
