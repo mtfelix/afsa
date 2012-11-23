@@ -34,6 +34,7 @@ function [f, thisFish] = prey(pos)
   global fishNum;
   global maxPreyNum
   global feature_uf;
+  global getFood;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   f = food(pos);

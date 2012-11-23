@@ -20,7 +20,7 @@
 ## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-26
 
-function [] = plotFigure (position, food, iter)
+function [] = plot_cluster (position, food, iter)
 
   if size(position)(2) == 1
     plot(position, food, "*");

@@ -88,7 +88,8 @@ endif
 %% defineRange是定义域
 global defineRange;
 if isempty(defineRange)
-  defineRange = [0, 7.5; 0, 7.5];
+%  defineRange = [-3, 3; -3, 3];
+   defineRange = [-10,10];
 endif
 
 %% gFoodCount变量用于存储getFood函数被调用的次数
@@ -98,8 +99,27 @@ global gFoodCount = 0;
 
 %% ========== 定义调用方式 ==========
 %
+%% 定义使用的food函数
+global getFood;
+% 聚类函数
+%getFood = @cluster_food;
+% 一维函数
+getFood = @one_dim_func;
+% 二维函数
+%getFood = @peaks_func;
+
+%% 定义使用的plot函数
+global plotFigure;
+% 聚类函数
+%plotFigure = @plot_cluster;
+% 一维函数
+plotFigure = @plot_one_dim;
+% 二维函数
+%plotFigure = @plot_two_dim;
+
 %% 定义是否调用uf
 global feature_uf = 1;
+
 
 %% ========== 初始化鱼群分布 ==========
 %  初始化的方式主要有两种
@@ -118,7 +138,7 @@ global feature_uf = 1;
 %% 以下使用均匀分布(非以概率分布)
 %  generateGrid函数的使用说明见该文件
 %
-global position = generateGrid(defineRange, 4);
+global position = generateGrid(defineRange, 16);
 
 %% ========== 初始化食物浓度值 ==========
 %  NOTE: 

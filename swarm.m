@@ -28,6 +28,7 @@ function [f, thisFish] = swarm (pos)
   global food;
   global stepsOfPrey;
   global fishNum;
+  global getFood;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   thisFish = position(pos,:);

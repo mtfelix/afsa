@@ -34,7 +34,7 @@ function [ret] = generateGrid(bound, num)
   endif
 
 %% 初始化返回值
-  ret = zeros(num ^ size(bound)(2), size(bound)(2));
+  ret = zeros(num ^ size(bound)(1), size(bound)(1));
 
 %% 计算维数
 %  这里bound是一个m*2的矩阵, 其中bound(:,1)是下限, bound(:,2)是上限

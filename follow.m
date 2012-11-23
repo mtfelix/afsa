@@ -41,6 +41,7 @@ function [f, thisFish] = follow (pos)
   global stepsOfPrey;
   global fishNum;
   global feature_uf;
+  global getFood;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   thisFish = position(pos,:);
