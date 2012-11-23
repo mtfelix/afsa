@@ -1,3 +1,4 @@
+#! /usr/bin/octave -qf
 ## Copyright (C) 2012 reAsOn
 ## 
 ## This program is free software; you can redistribute it and/or modify
@@ -19,36 +20,17 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-11-22
 
-function [ ret ] = top ()
-clear;
-%conf_file_name = input("Input configuration file:", "s");
-conf_file_name = "conf_test";
-[conf_file, MSG] = fopen(conf_file_name, 'r');
-if conf_file == -1
-    printf("%s\n", MSG);
-else
-    data_file = fscanf(conf_file, "LOAD_DATA_FILE=%s\n");
-    data_name = fscanf(conf_file, "DATA_NAME=%s\n");
-%    printf("%s\n", data_file);
-%    printf("%s\n", data_name);
-    loaded = load(data_file, data_name);
-    global data = loaded.X;
-    global tryNum = fscanf(conf_file, "TRY_NUMBER=%d\n");
-    global step = fscanf(conf_file, "STEP=%f\n");
-    global visual = fscanf(conf_file, "VISUAL=%f\n");
-    global jamming = fscanf(conf_file, "JAMMING=%f\n");
-    global fishNum = fscanf(conf_file, "FISH_NUM=%d\n");
-    global maxIter = fscanf(conf_file, "MAX_ITER=%d\n");
-    global dimension = fscanf(conf_file, "DIMENSION=%d\n");
-    
-    global defineRange = [];
-    for i = 1:dimension
-        lower = fscanf(conf_file, "LOWER_BOUND=%f\n");
-        upper = fscanf(conf_file, "UPPER_BOUND=%f\n");
-        defineRange = [defineRange;[lower, upper]];
-    endfor
-    fclose(conf_file);
-    af;
-endif
-
-endfunction
+%function [ ret ] = top ()
+    clear;
+    load ex7data2.mat;
+    global data = X;
+    global tryNum = 3;
+    global step = 0.5;
+    global visual = 2.5;
+    global jamming = 0.1;
+    global fishNum = 16;
+    global maxIter = 10;
+    global dimension = 2
+    global defineRange = [0,7.5;0,7.5];
+    af();
+%endfunction

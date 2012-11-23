@@ -22,7 +22,7 @@
 ## Keywords: Artificial Fish Algorithm
 ## Created: 2012-08-12
 
-%function af()
+function [ ret ] = af()
 %% ==================== 初始配置 ==================== 
 %  以下代码用于进行程序运行环境的初始配置
 % 
@@ -429,4 +429,4 @@ clear;
 %    hold off;
 %    pause();
 %endfor
-%endfunction
+endfunction
