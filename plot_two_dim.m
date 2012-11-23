@@ -24,6 +24,8 @@ function [] = plot_two_dim (position, food, iter)
   persistent x;
   persistent y;
   persistent z;
+  persistent t1;
+  persistent t2;
   global defineRange;
   global getFood;
 
