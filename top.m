@@ -48,7 +48,7 @@ else
         defineRange = [defineRange;[lower, upper]];
     endfor
     fclose(conf_file);
-    af();
+    af;
 endif
 
 endfunction

@@ -69,7 +69,7 @@ function [f, thisFish] = prey(pos)
       thisFish = tempPosition;
       f = getFood(thisFish);
 
-      break
+      return;
 
     endif  % if getFood(tempPosition, data) > food(pos)
 
@@ -80,9 +80,7 @@ function [f, thisFish] = prey(pos)
 %% 若前tryNumber-1次尝试没有获得更好的值
 %  第tryNumber次无需再做判断(此处相当于random move)
 %
-  if f <= food(pos)
-     thisFish = getNewPosition(position(pos,:));
-     f = getFood(thisFish);
-  endif
+  thisFish = getNewPosition(position(pos,:));
+  f = getFood(thisFish);
 
 endfunction

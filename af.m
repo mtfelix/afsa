@@ -1,4 +1,4 @@
-#! /usr/bin/octave
+#! /usr/bin/octave -qf
 ## Copyright (C) 2012 reAsOn
 ## 
 ## This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 ## Keywords: Artificial Fish Algorithm
 ## Created: 2012-08-12
 
-function [ ret ] = af()
+%function af()
 %% ==================== 初始配置 ==================== 
 %  以下代码用于进行程序运行环境的初始配置
 % 
@@ -40,32 +40,56 @@ debug_on_warning (1);
 
 %% ========== 以下参数考虑转移 ==========
 %
-%load ex7data2.mat;
-global data% = X;
+global data;
+if isempty(data)
+   load ex7data2.mat;
+   data = X;
+endif
 
 %% tryNUmber表示prey执行的最高次数
-global tryNumber% = 3;
+global tryNumber;
+if isempty(tryNumber)
+   tryNumber = 3;
+endif
 
 %% step表示步长
-global step% = 0.5;
+global step;
+if isempty(step)
+   step = 0.5;
+endif
 
 %% visual为视阈
-global visual% = 2.5;
+global visual;
+if isempty(visual)
+   visual = 2.5;
+endif
 
 %% jamming是拥挤因子
-global jamming% = 0.1;
+global jamming;
+if isempty(jamming)
+  jamming = 0.1;
+endif
 
 %% iter是已经迭代的步数
 global iter = 0;
 
 %% fishNum是鱼的数量
-global fishNum% = 16;
+global fishNum;
+if isempty(fishNum)
+  fishNum = 16;
+endif
 
 %% maxIter是迭代的上限
-global maxIter% = 10
+global maxIter;
+if isempty(maxIter)
+  maxIter = 10;
+endif
 
 %% defineRange是定义域
-global defineRange% = [0, 7.5; 0, 7.5];
+global defineRange;
+if isempty(defineRange)
+  defineRange = [0, 7.5; 0, 7.5];
+endif
 
 %% gFoodCount变量用于存储getFood函数被调用的次数
 %  仅在需要调试的时候使用
@@ -305,11 +329,14 @@ while(condition() == 1)
 
 %% ========== 一次迭代结束 ==========
 %  以下代码实现:
-%  1. 迭代数加一
-%  2. 输出一些迭代信息
-%
+%% 1. 迭代数加一
   iter = iter + 1;
+%% 2. 输出一些迭代信息 
+%  这里用fflush(stdout)保证本函数即使被其他函数调用,也可以正确显示迭代信息
+%  若不写这句, 当函数被其他程序调用时, 需要等待程序运行完成才会一次性输出
+%
   printf("Iteration %d DONE\n",iter);
+  fflush(stdout);
 
 %% 输出每次迭代后的鱼群分布
 %  plotFigure(position, food);
@@ -353,7 +380,7 @@ if feature_uf
   hold off;
   pause();
 endif
-
+clear;
 %% 以下代码主要检查data被实际聚类的情况
 %% NOTE:
 %  程序时间复杂度未经优化, 仅作debug使用
@@ -383,4 +410,4 @@ endif
 %    hold off;
 %    pause();
 %endfor
-endfunction
+%endfunction
