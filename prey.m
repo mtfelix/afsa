@@ -33,13 +33,16 @@ function [f, thisFish] = prey(pos)
   global stepsOfPrey;
   global fishNum;
   global maxPreyNum
+  global feature_uf;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   f = food(pos);
   thisFish = position(pos,:);
 
 %% 进行最多tryNumber次的试验
-  for i=1:tryNumber
+%  其中前tryNumber-1次的试验会判断取值是否更合理
+%  若没有更合适, 则继续尝试
+  for i=1:tryNumber-1
 
 %% 获取新的位置
     tempPosition = getNewPosition(position(pos,:));
@@ -53,11 +56,13 @@ function [f, thisFish] = prey(pos)
 %  否则, 次数加一
 %  同时, 将结果存储到返回值中并退出循环
 %
-      if stepsOfPrey(pos, 1) >= maxPreyNum
-	UF_Break(pos);
-	stepsOfPrey(pos, 1) = 0;
-      else
-	stepsOfPrey(pos, 1) += 1;
+      if feature_uf
+	if stepsOfPrey(pos, 1) >= maxPreyNum
+	  UF_Break(pos);
+	  stepsOfPrey(pos, 1) = 0;
+	else
+	  stepsOfPrey(pos, 1) += 1;
+	endif
       endif
 
 %% 保存这次的结果 
@@ -71,5 +76,13 @@ function [f, thisFish] = prey(pos)
     gFoodCount+=1;
 
   endfor   % for i=1:tryNumber
+
+%% 若前tryNumber-1次尝试没有获得更好的值
+%  第tryNumber次无需再做判断(此处相当于random move)
+%
+  if f <= food(pos)
+     thisFish = getNewPosition(position(pos,:));
+     f = getFood(thisFish);
+  endif
 
 endfunction

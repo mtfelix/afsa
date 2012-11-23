@@ -12,7 +12,7 @@ function [] = UF_Union(p, q)
 %  在前期, 将元素先从集合中分离出去再合并起来,
 %  有助于避免两个相近的分类因为follow的连续传递关系而合并成一个
 %
-  if iter <= maxIter - 1
+  if iter <= maxIter - 2
     UF_Break(p);
     UF_Break(q);
   endif

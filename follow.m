@@ -40,6 +40,7 @@ function [f, thisFish] = follow (pos)
   global food;
   global stepsOfPrey;
   global fishNum;
+  global feature_uf;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   thisFish = position(pos,:);
@@ -94,7 +95,9 @@ function [f, thisFish] = follow (pos)
     if food(j) > jamming * food(pos) * friends
 %% ========== 符合要求, 执行follow ==========
 %  1. 合并集合  
-      UF_Union(pos, j);
+      if feature_uf
+	UF_Union(pos, j);
+      endif
 
 %  2. 连续prey的次数清零
       stepsOfPrey(pos, 1) = 0;

@@ -41,7 +41,7 @@ debug_on_warning (1);
 %% ========== 以下参数考虑转移 ==========
 %
 %load ex7data2.mat;
-global data;% = X;
+global data% = X;
 
 %% tryNUmber表示prey执行的最高次数
 global tryNumber% = 3;
@@ -62,7 +62,7 @@ global iter = 0;
 global fishNum% = 16;
 
 %% maxIter是迭代的上限
-global maxIter% = 15
+global maxIter% = 10
 
 %% defineRange是定义域
 global defineRange% = [0, 7.5; 0, 7.5];
@@ -71,6 +71,11 @@ global defineRange% = [0, 7.5; 0, 7.5];
 %  仅在需要调试的时候使用
 %
 global gFoodCount = 0;
+
+%% ========== 定义调用方式 ==========
+%
+%% 定义是否调用uf
+global feature_uf = 1;
 
 %% ========== 初始化鱼群分布 ==========
 %  初始化的方式主要有两种
@@ -141,12 +146,18 @@ global ansBoardIndex = -1;
 %% ========== 初始化并查集 ==========
 %  具体的代码参见UF_Create函数的相关说明
 %
-global unionFind = UF_Create(fishNum);
+global unionFind;
+if feature_uf
+  unionFind = UF_Create(fishNum);
+endif
 
 %% 为stepsOfPrey变量分配空间
 %  改变量的作用是记录已经连续执行了几次Prey操作
 %
-global stepsOfPrey = zeros(fishNum , 1);
+global stepsOfPrey;
+if feature_uf
+  stepsOfPrey = zeros(fishNum , 1);
+endif
 
 %% maxPreyNum指定了最多执行的prey次数
 %  一旦连续执行超过maxPreyNum次数的prey
@@ -155,7 +166,10 @@ global stepsOfPrey = zeros(fishNum , 1);
 %  由于局部极值无发找到更好的解而执行prey运动
 %  而被执行了不必要的UF_Break操作
 %
-global maxPreyNum = 3;
+global maxPreyNum;
+if feature_uf
+  maxPreyNum = 3;
+endif
 
 %% 以下查看初始化情况
 %  仅在debug时用于查看, 一般不需执行
@@ -181,7 +195,7 @@ while(condition() == 1)
     if i == ansBoardIndex
 %% 调试信息
 %       printf("iter(%d) skipped\n", i);
-       continue;
+%       continue;
     endif
 
 %% choice变量用于计算下一步要执行的运动方式
@@ -231,12 +245,14 @@ while(condition() == 1)
 	case 7
           tmpPosition(i,:) = getNewPosition(position(i,:));
           tmpFood(i) = getFood(tmpPosition(i,:));
-          if stepsOfPrey(i, 1) >= maxPreyNum
-            UF_Break(i);
-            stepsOfPrey(i, 1) = 0;
-          else
-            stepsOfPrey(i, 1) += 1;
-          endif
+	  if feature_uf
+            if stepsOfPrey(i, 1) >= maxPreyNum
+              UF_Break(i);
+              stepsOfPrey(i, 1) = 0;
+            else
+              stepsOfPrey(i, 1) += 1;
+            endif
+	  endif
 
 %% ========== 执行调试语句 ==========
 %  执行顺序为5
@@ -283,8 +299,8 @@ while(condition() == 1)
 
 %% ========== 更新鱼群信息 ==========
 %  此处表示一次迭代完成后一次性更新全部信息
-  position = tmpPosition;
-  food = tmpFood;
+%  position = tmpPosition;
+%  food = tmpFood;
     
 
 %% ========== 一次迭代结束 ==========
@@ -315,8 +331,10 @@ plotFigure(position, food);
 
 %% ========== 输出并查集的结果 ==========
 %
-[result, num] = UF_Check();
-printf("Class = %d\n", size(result)(1));
+if feature_uf
+  [result, num] = UF_Check();
+  printf("Class = %d\n", size(result)(1));
+endif
 
 %% 以下代码检查fish被分类的情况, 并计算出中心位置
 %% NOTE:
@@ -326,13 +344,15 @@ c = plotClass();
 %% 以下代码输出各个几何的中心点位置
 %  中心点定义为一个集合中食物浓度最大的点
 %
-plot(data(:,1),data(:,2),'o');
-hold on;
-for i = 1:size(c)(1)
+if feature_uf
+  plot(data(:,1),data(:,2),'o');
+  hold on;
+  for i = 1:size(c)(1)
     plot(c(i,1),c(i,2),'r*');
-endfor
-hold off;
-pause();
+  endfor
+  hold off;
+  pause();
+endif
 
 %% 以下代码主要检查data被实际聚类的情况
 %% NOTE:
