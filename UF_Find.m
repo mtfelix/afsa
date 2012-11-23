@@ -1,5 +1,13 @@
+%% ==================== 说明 ====================
+%  本函数主要用于查找制定元素所在集合的编号
+%
 function [id] = UF_Find(p)
+%% ========== 声明全局变量 ==========
+% 
   global unionFind;
+
+%% ========== 一些鲁棒性的检测 ==========
+%
   if p <= 0 || p > size(unionFind)(2)
     id = -1;
     if p <= 0
@@ -10,13 +18,13 @@ function [id] = UF_Find(p)
 	     size(unionFind)(2));
     endif
   else
+%% ========== 查找 ==========
+%  递归查找树的顶端节点
+%  更详细的说明可以参考并查集的算法说明
     id = p;
     while id != unionFind(id)
       id = unionFind(id);
     endwhile
-  endif  
-  if id == 0
-    printf("In UN_Find id == 0\n");
   endif
-  fflush(stdout);
+
 endfunction

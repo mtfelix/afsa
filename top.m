@@ -20,16 +20,17 @@
 ## Created: 2012-11-22
 
 function [ ret ] = top ()
-
-conf_file_name = input("Input configuration file:", "s");
+clear;
+%conf_file_name = input("Input configuration file:", "s");
+conf_file_name = "conf_test";
 [conf_file, MSG] = fopen(conf_file_name, 'r');
 if conf_file == -1
     printf("%s\n", MSG);
 else
     data_file = fscanf(conf_file, "LOAD_DATA_FILE=%s\n");
     data_name = fscanf(conf_file, "DATA_NAME=%s\n");
-    printf("%s\n", data_file);
-    printf("%s\n", data_name);
+%    printf("%s\n", data_file);
+%    printf("%s\n", data_name);
     loaded = load(data_file, data_name);
     global data = loaded.X;
     global tryNum = fscanf(conf_file, "TRY_NUMBER=%d\n");

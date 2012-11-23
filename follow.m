@@ -34,14 +34,9 @@
 function [f, thisFish] = follow (pos)	 
 %% ========== 声明全局变量 ==========
 %
-  global iter;
-  global gFoodCount;
   global position;
-  global step;
   global visual;
-  global tryNumber;
   global jamming;
-  global data;
   global food;
   global stepsOfPrey;
   global fishNum;
@@ -100,11 +95,14 @@ function [f, thisFish] = follow (pos)
 %% ========== 符合要求, 执行follow ==========
 %  1. 合并集合  
       UF_Union(pos, j);
+
 %  2. 连续prey的次数清零
       stepsOfPrey(pos, 1) = 0;
+
 %  3. 计算方向向量
       dirVector = position(j,:) - position(pos,:);
       direction = dirVector./ norm(dirVector);
+
 %  4. 计算新的位置和新的食物浓度
       thisFish = getNewPosition(position(pos,:),direction);
       f = getFood(thisFish);

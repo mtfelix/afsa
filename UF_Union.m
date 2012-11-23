@@ -1,30 +1,33 @@
-# this time the order of p and q are really IMPORTANT
+%% ==================== 说明 ====================
+%  本函数用于将两个下标所表示的元素所在的集合合并起来
+%
 function [] = UF_Union(p, q)
-#  printf("Union (%d,%d)\n",p,q);
-  global gFoodCount;
+%% ========== 声明全局变量 ==========
+%
   global food;
   global unionFind;
-  global position;
+  global maxIter;
   global iter;
-  global data;
-  if iter <=28
+%% ========== 说明 ==========
+%  在前期, 将元素先从集合中分离出去再合并起来,
+%  有助于避免两个相近的分类因为follow的连续传递关系而合并成一个
+%
+  if iter <= maxIter - 1
     UF_Break(p);
+    UF_Break(q);
   endif
+ 
   i = UF_Find(p);
   j = UF_Find(q);
   if i != j
-    if size(position(i,:))(2) == 1
-      printf("size(position) == 1\n\twhere i = %d\n",i);
-    endif
-    if size(position(j,:))(2) == 1
-      printf("size(position) == 1\n\twhere i = %d\n",j);
-    endif
-    if getFood(position(i,:)) < getFood(position(j,:))
-%    if food(i) < food(j)
+%% 此处判断哪部分为双亲节点的依据在于食物浓度
+%  食物浓度大者为双亲 
+   if food(i) < food(j)
       unionFind(i) = j;
     else
       unionFind(j) = i;
     endif
-    gFoodCount+=2;
+
   endif
+
 endfunction

@@ -41,31 +41,31 @@ debug_on_warning (1);
 %% ========== 以下参数考虑转移 ==========
 %
 %load ex7data2.mat;
-%global data = X;
+global data;% = X;
 
 %% tryNUmber表示prey执行的最高次数
-%global tryNumber = 3;
+global tryNumber% = 3;
 
 %% step表示步长
-%global step = 0.5;
+global step% = 0.5;
 
 %% visual为视阈
-%global visual = 2.5;
+global visual% = 2.5;
 
 %% jamming是拥挤因子
-%global jamming = 0.1;
+global jamming% = 0.1;
 
 %% iter是已经迭代的步数
 global iter = 0;
 
 %% fishNum是鱼的数量
-%global fishNum = 16;
+global fishNum% = 16;
 
 %% maxIter是迭代的上限
-%global maxIter = 15
+global maxIter% = 15
 
 %% defineRange是定义域
-%global defineRange = [0, 7.5; 0, 7.5];
+global defineRange% = [0, 7.5; 0, 7.5];
 
 %% gFoodCount变量用于存储getFood函数被调用的次数
 %  仅在需要调试的时候使用
@@ -108,8 +108,7 @@ endfor
 %% NOTE:
 %  如果程序改成每条鱼执行一次运动就修改position的变量,
 %  那么tmpPosition不再需要
-tmpPosition = zeros(%size(data)(2)
-            fishNum, size(data)(2));
+tmpPosition = zeros(fishNum, size(position)(2));
 
 %% tmpFood用于存放当且迭代步骤下鱼坐标对应的食物浓度
 %  用于在一次迭代完成后一并更改所有鱼的坐标位置
@@ -180,6 +179,8 @@ while(condition() == 1)
 %% 若为当前的最优解, 则该鱼不动
 %  此处改进参考了[1]
     if i == ansBoardIndex
+%% 调试信息
+%       printf("iter(%d) skipped\n", i);
        continue;
     endif
 
@@ -189,11 +190,11 @@ while(condition() == 1)
 %% ========== 说明 ==========
 %  运动方式的调用顺序如下:
 %  1. follow
-%  2. 暂时为空
+%  2. swarm
 %  3. prey
 %  4. 暂时为空
 %  5. 用于调试
-%  6. swarm(不会被执行)
+%  6. 暂时为空
 %  7. random move
 %  其他(不会被执行)
 %
@@ -203,26 +204,25 @@ while(condition() == 1)
 %  执行顺序为1
 	case 1
           [tmpFood(i), tmpPosition(i, :)] = follow(i);
+
+%% ========== 执行swarm ==========
+%  执行顺序为2
+%
+	case 2
+          [tmpFood(i), tmpPosition(i,:)] = swarm(i);
+
 %% ========== 执行prey ==========
 %  执行顺序为3
 	case 3
           [tmpFood(i), tmpPosition(i,:)] = prey(i);
-%% ========== 执行swarm ==========
-%  执行顺序为6
-%% NOTE:
-%  目前swarm并未被调用
-%  同时,swarm函数还有待修改
-%
-	case 2
-%% 这是一条空语句, case 2未执行任何代码
 
 %% case 6实际上不会被执行
 	case 6
-          [tmpFood(i), tmpPosition(i,:), unionFind, stepsOfPrey] = \
-          swarm(position(i,:), position, tryNumber, step,
-		visual, jamming, unionFind, i, stepsOfPrey,data);
+% 这是一条空语句, case 6未执行任何代码
+
 	case 4
-%% 这是一条空语句, case 2未执行任何代码	     
+%% 这是一条空语句, case 4未执行任何代码
+	     
 %% ========== 执行random move ==========
 %  执行顺序为7(本语句不会被执行)
 %% NOTE:
@@ -237,9 +237,10 @@ while(condition() == 1)
           else
             stepsOfPrey(i, 1) += 1;
           endif
+
 %% ========== 执行调试语句 ==========
 %  执行顺序为5
-%  case 5的语句仅在random move没有得到合适的值时执行
+%  case 5的语句仅在执行prey且也没有得到合适的值时执行
 %
 	case 5
 %% 输出调试语句
@@ -258,10 +259,19 @@ while(condition() == 1)
         choice += 1;
       else
 %% 输出一点调试信息
+%  查看每条鱼最终执行的运动方式(需配合case 5一起使用)
 %        printf("iter(%d):%d\n",i,choice);
         break;
       endif  % if tmpFood(i) <= food(i)
+
     endwhile % while (choise <= 5)
+
+%% ========== 更新鱼群信息 ==========
+%  此处表示每执行一步便进行更新
+%
+  position(i, :) = tmpPosition(i, :);
+  food(i) = tmpFood(i);
+
   endfor     % for i = 1 : fishNum
 
 %% ========== 更新公告版 ==========
@@ -272,7 +282,7 @@ while(condition() == 1)
   endif
 
 %% ========== 更新鱼群信息 ==========
-% 
+%  此处表示一次迭代完成后一次性更新全部信息
   position = tmpPosition;
   food = tmpFood;
     
