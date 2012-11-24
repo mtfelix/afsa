@@ -44,3 +44,23 @@ function [food] = cluster_food(position)
 	food = sum(gauss(diff));
     end
 endfunction
+
+function [ ret ] = gauss(distance)
+
+%% ========== 高斯分布 ==========
+%  函数在零点处最大, 越远离原点值越小
+%  同时, 独立变量的高斯分布具有良好的性质:
+%  计算多维的高斯分布可以改成计算一维的高斯分布函数, 再相乘
+%  这里, 根据指数的性质, 相乘等价于指数相加
+%
+    ret = exp(-0.5 * sum(distance.^2, 2));	 
+endfunction
+
+function [ ret ] = sigmoid(distance)
+%% ========== sigmoid函数 ==========
+%  原先的sigmoid函数在正半轴取值接近于1, 在负半轴取值接近与0
+%  这里改用绝对值后保证在靠近原点处值最大(为0.5), 越远离原点值越小
+%  该函数暂时不支持多维问题
+%
+    ret = 1 ./ (1 + exp(1*abs(distance)));
+endfunction

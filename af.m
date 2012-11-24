@@ -132,7 +132,10 @@ endif
 %% 以下使用均匀分布(非以概率分布)
 %  generateGrid函数的使用说明见该文件
 %
-global position = generateGrid(defineRange, (fishNum).^(1/size(defineRange)(1)));
+global position = generateGrid(
+		      defineRange,
+		      (fishNum) .^ ( 1 / size(defineRange)(1) )
+		    );
 
 %% ========== 初始化食物浓度值 ==========
 %  NOTE: 
