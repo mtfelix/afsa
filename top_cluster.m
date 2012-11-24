@@ -27,7 +27,9 @@ debug_on_warning (1);
 %% ==================== 参数配置 ====================
 %
 
-%global data;
+global data;
+load("ex7data2.mat");
+data = X;
 
 %% tryNUmber表示prey执行的最高次数
 global tryNumber = 3;
@@ -48,8 +50,8 @@ global fishNum = 16;
 global maxIter = 10;
 
 %% defineRange是定义域
-%global defineRange = [-3, 3; -3, 3];
 global defineRange = [0, 7.5; 0, 7.5];
+
 %% gFoodCount变量用于存储getFood函数被调用的次数
 %  仅在需要调试的时候使用
 %
@@ -58,11 +60,9 @@ global gFoodCount = 0;
 %% ========== 定义调用方式 ==========
 %
 %% 定义使用的food函数
-%global getFood = @peaks_func;
-global getFood = @cluster_food;
+global getFood = @food_cluster;
 
 %% 定义使用的plot函数
-%global plotFigure = @plot_two_dim;
 global plotFigure = @plot_cluster;
 %% 定义是否调用uf
 global feature_uf = 1;

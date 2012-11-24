@@ -20,6 +20,7 @@ function [ret] = condition()
   global visual;         % 视域
   global fishNum;        % 鱼群数量
   global maxIter;        % 最大迭代次数上限
+  global feature_uf;
 
 %% ansBoardIndex仅在初始化时为-1
   if ansBoardIndex == -1
@@ -53,7 +54,13 @@ function [ret] = condition()
 %% 判断邻域内的鱼群数量是否达到收敛要求
 %  达到要求返回0
 %  未达到要求返回1
-      if friends >= fishNum / 2
+      if feature_uf
+	 maxUpBound = fishNum;
+      else
+	maxUpBound = fishNum / 3;
+      endif
+
+      if friends >= maxUpBound
 	ret = 0;
       else
 	ret = 1;

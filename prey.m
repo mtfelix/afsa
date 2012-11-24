@@ -74,8 +74,6 @@ function [f, thisFish] = prey(pos)
 
     endif  % if getFood(tempPosition, data) > food(pos)
 
-    gFoodCount+=1;
-
   endfor   % for i=1:tryNumber
 
 %% 若前tryNumber-1次尝试没有获得更好的值

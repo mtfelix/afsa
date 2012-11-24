@@ -48,8 +48,8 @@ global fishNum = 16;
 global maxIter = 10;
 
 %% defineRange是定义域
-%global defineRange = [-3, 3; -3, 3];
-global defineRange = [0, 7.5; 0, 7.5];
+global defineRange = [-10, 10];
+
 %% gFoodCount变量用于存储getFood函数被调用的次数
 %  仅在需要调试的时候使用
 %
@@ -58,21 +58,20 @@ global gFoodCount = 0;
 %% ========== 定义调用方式 ==========
 %
 %% 定义使用的food函数
-%global getFood = @peaks_func;
-global getFood = @cluster_food;
+global getFood = @food_one_dim;
 
 %% 定义使用的plot函数
-%global plotFigure = @plot_two_dim;
-global plotFigure = @plot_cluster;
+global plotFigure = @plot_one_dim;
+
 %% 定义是否调用uf
-global feature_uf = 1;
+global feature_uf = 0;
 
 %% 定义debug级别
 %% ===== debug级别 =====
 %  0. 无debug信息输出
 %  1. 输出迭代次数和最后的图像
 %  2. 输出每步的迭代图像和鱼的运动类别选择
-global debug_level = 1;
+global debug_level = 0;
 
 %% 调用函数
 af();

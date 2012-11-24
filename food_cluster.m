@@ -24,6 +24,13 @@ function [food] = cluster_food(position)
 
   global gFoodCount;
   global data;
+  if isempty(data)
+    load ex7data2.mat;
+    data = X;
+  endif
+  if isempty(gFoodCount)
+     gFoodCount = 0;
+  endif
   gFoodCount += 1;
   food = 0;
 % match the dimension of coordinate and data

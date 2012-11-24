@@ -31,20 +31,89 @@ function [ ret ] = af()
 clc;
 %clear;%close all;
 
-% 声明全局变量
-global data;
+%% ========== 声明全局变量 ==========
+%
+
+%% tryNUmber表示prey执行的最高次数
 global tryNumber;
+if isempty(tryNumber)
+   tryNumber = 3;
+endif
+
+%% step表示步长
 global step;
+if isempty(step)
+   step = 0.5;
+endif
+
+%% visual为视阈
 global visual;
+if isempty(visual)
+   visual = 2.5;
+endif
+
+%% jamming是拥挤因子
 global jamming;
-global iter;
+if isempty(jamming)
+  jamming = 0.1;
+endif
+
+%% iter是迭代次数, 初始化为0
+global iter = 0;
+
+%% fishNum是鱼的数量
 global fishNum;
+if isempty(fishNum)
+  fishNum = 16;
+endif
+
+%% maxIter是迭代的上限
 global maxIter;
+if isempty(maxIter)
+  maxIter = 10;
+endif
+
+%% defineRange是定义域
 global defineRange;
-global gFoodCount;
+if isempty(defineRange)
+  defineRange = [-3, 3; -3, 3];
+endif
+
+%% ========== 定义调用方式 ==========
+%
+%% 定义使用的food函数
 global getFood;
+if isempty(getFood)
+%% 聚类函数
+  %getFood = @cluster_food;
+%% 一维函数
+  %getFood = @one_dim_func;
+%% 二维函数
+  getFood = @peaks_func;
+endif
+
+%% 定义使用的plot函数
 global plotFigure;
+if isempty(plotFigure)
+%% 聚类函数
+  %plotFigure = @plot_cluster;
+%% 一维函数
+  %plotFigure = @plot_one_dim;
+%% 二维函数
+  plotFigure = @plot_two_dim;
+endif
+
+%% 定义是否调用uf
 global feature_uf;
+if isempty(feature_uf)
+   feature_uf = 0;
+endif
+
+%% 定义debug级别
+global debug_level;
+if isempty(debug_level)
+   debug_level = 0;
+endif
 
 %% ========== 初始化鱼群分布 ==========
 %  初始化的方式主要有两种
@@ -142,7 +211,9 @@ endif
 
 %% 以下查看初始化情况
 %  仅在debug时用于查看, 一般不需执行
-%plotFigure(position, food);
+if debug_level >= 2
+  plotFigure(position, food);
+endif
 
 %% ==================== 程序开始 ====================
 %
@@ -163,8 +234,10 @@ while(condition() == 1)
 %  此处改进参考了[1]
     if i == ansBoardIndex
 %% 调试信息
-%       printf("iter(%d) skipped\n", i);
-%       continue;
+      if debug_level >= 2
+	printf("iter(%d) skipped\n", i);
+      endif
+      continue;
     endif
 
 %% choice变量用于计算下一步要执行的运动方式
@@ -229,7 +302,9 @@ while(condition() == 1)
 %
 	case 5
 %% 输出调试语句
-%	  printf("iter(%d):%d\n",i,choice);
+	  if debug_level >= 2
+	    printf("iter(%d):%d\n",i,choice);
+	  endif
 
 %% ========== 以防万一 ==========
 %  其他情况(理应执行不到这句语句)
@@ -245,7 +320,9 @@ while(condition() == 1)
       else
 %% 输出一点调试信息
 %  查看每条鱼最终执行的运动方式(需配合case 5一起使用)
-%        printf("iter(%d):%d\n",i,choice);
+	if debug_level >= 2
+          printf("iter(%d):%d\n",i,choice);
+	endif
         break;
       endif  % if tmpFood(i) <= food(i)
 
@@ -280,26 +357,40 @@ while(condition() == 1)
 %  这里用fflush(stdout)保证本函数即使被其他函数调用,也可以正确显示迭代信息
 %  若不写这句, 当函数被其他程序调用时, 需要等待程序运行完成才会一次性输出
 %
-  printf("Iteration %d DONE\n",iter);
-  fflush(stdout);
+  if debug_level >= 1
+    printf("Iteration %d DONE\n",iter);
+    fflush(stdout);
+  endif
 
 %% 输出每次迭代后的鱼群分布
-%  plotFigure(position, food);
+  if debug_level >= 2
+    plotFigure(position, food);
+  endif
 
 endwhile  % while(condition() == 1)
 
 %% 计时结束
-toc;
+time = toc;
 
 %% ==================== 以下输出运行结果 ====================
 %  
-printf("Board = %f\n",ansBoard);
-printf("Boardx = %f\n", positionBoard);
-printf("Iter = %f\n",iter);
-printf("gFoodCount = %f\n",gFoodCount);
+if debug_level >= 1
+  printf("Board = %f\n",ansBoard);
+  printf("Boardx = %f\n", positionBoard);
+  printf("Iter = %f\n",iter);
+
+  global gFoodCount;
+  if ~isempty(gFoodCount)
+    printf("gFoodCount = %f\n",gFoodCount);
+  endif
+
+  printf("time = %f\n", time);
+endif
 
 %% 输出图像
-plotFigure(position, food);
+if debug_level >= 1
+  plotFigure(position, food);
+endif
 
 %% ========== 输出并查集的结果 ==========
 %
@@ -317,6 +408,7 @@ c = plotClass();
 %  中心点定义为一个集合中食物浓度最大的点
 %
 if feature_uf
+  global data;
   plot(data(:,1),data(:,2),'o');
   hold on;
   for i = 1:size(c)(1)
@@ -325,34 +417,38 @@ if feature_uf
   hold off;
   pause();
 endif
-clear;
+
 %% 以下代码主要检查data被实际聚类的情况
 %% NOTE:
 %  程序时间复杂度未经优化, 仅作debug使用
-%for i = 1:size(c)(1)
-%    plotData = [];
-%    for j = 1:size(data)(1)
-%	flag = 1;	
-%	for k = 1:size(c)(1)
-%	    if k == i
-%	       continue;
-%	    endif
-%	    if getDistance(c(i,:), data(j,:)) > getDistance(c(k,:),data(j,:))
-%	       flag = 0;
-%	       break;
-%	    endif
-%	endfor
-%	if flag == 1
-%	   plotData = [plotData; data(j,:)];
-%	endif
-%    endfor
-%    plot(data(:,1),data(:,2),'o');
-%    hold on;
-%    plot(c(i,1),c(i,2),'g*');
-%    if ~isempty(plotData)
-%      plot(plotData(:,1),plotData(:,2),'ro');
-%    endif
-%    hold off;
-%    pause();
-%endfor
+if feature_uf
+  for i = 1:size(c)(1)
+    plotData = [];
+    for j = 1:size(data)(1)
+      flag = 1;	
+      for k = 1:size(c)(1)
+	if k == i
+	  continue;
+	endif
+	if getDistance(c(i,:), data(j,:)) > getDistance(c(k,:),data(j,:))
+	  flag = 0;
+	  break;
+	endif
+      endfor
+      if flag == 1
+	plotData = [plotData; data(j,:)];
+      endif
+    endfor
+    plot(data(:,1),data(:,2),'o');
+    hold on;
+    plot(c(i,1),c(i,2),'g*');
+    if ~isempty(plotData)
+      plot(plotData(:,1),plotData(:,2),'ro');
+    endif
+    hold off;
+    pause();
+  endfor
+endif
+
+clear;
 endfunction
