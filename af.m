@@ -115,6 +115,12 @@ if isempty(debug_level)
    debug_level = 0;
 endif
 
+%% 定义判定收敛方式
+global condition;
+if isempty(condition)
+   condition = @condition_function;
+endif
+
 %% ========== 初始化鱼群分布 ==========
 %  初始化的方式主要有两种
 %  一种是随机分布
@@ -125,18 +131,26 @@ endif
 %  需要改进
 %
 
-%% 以下使用随机分布
-%global position = rand(%size(data)(2)
-%        fishNum, size(data)(2));
+global initial_type;
+if isempty(initial_type)
+   initial_type = 1;
+endif
 
+if initial_type == 1
+%% 以下使用随机分布
+  global position = rand(fishNum, size(defineRange)(1)) * 255;
+
+else
 %% 以下使用均匀分布(非以概率分布)
 %  generateGrid函数的使用说明见该文件
 %
 global position = generateGrid(
 		      defineRange,
-		      (fishNum) .^ ( 1 / size(defineRange)(1) )
+		      floor((fishNum) .^ ( 1 / size(defineRange)(1) ))
 		    );
-
+%% 此处需要稍微调整一下fishNum的数量
+fishNum = floor( (fishNum) .^ ( 1 / size(defineRange)(1)) ) ^ size(defineRange)(1);
+endif
 %% ========== 初始化食物浓度值 ==========
 %  NOTE: 
 %  目前仅函数最值查找的getFood函数可以接受矩阵形式

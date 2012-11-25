@@ -64,6 +64,10 @@ global getFood = @food_cluster;
 
 %% 定义使用的plot函数
 global plotFigure = @plot_cluster;
+
+%% 定义判定收敛方式
+global condition = @condition_cluster;
+
 %% 定义是否调用uf
 global feature_uf = 1;
 

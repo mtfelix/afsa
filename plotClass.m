@@ -27,15 +27,15 @@ function [retCenter] = plotClass()
       center = maxData(1,:);
     endif
 %      plot(0,0,"-");
-    hold on
+%    hold on
 %      plot(data(:,1),data(:,2),'o');
 %      plot(10,10,"-");
-    plot(position(:,1)', position(:,2)', "*");
-    plot(plotData(:,1)', plotData(:,2)', "2*");
-    plot(center(1),center(2),'r*');
-    hold off
+%    plot(position(:,1)', position(:,2)', "*");
+%    plot(plotData(:,1)', plotData(:,2)', "2*");
+%    plot(center(1),center(2),'r*');
+%    hold off
     retCenter = [retCenter;center];
-    pause();
+%    pause();
   endfor
 
 endfunction

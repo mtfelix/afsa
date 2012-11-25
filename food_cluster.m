@@ -20,7 +20,7 @@
 ## Author: LaySent <laysent@gmail.com>
 ## Created: 2012-08-17
 
-function [food] = cluster_food(position)
+function [food] = food_cluster(position)
 
   global gFoodCount;
   global data;
