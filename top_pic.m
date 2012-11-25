@@ -20,12 +20,13 @@
 ## Author: reAsOn <reason@For-Napkin>
 ## Created: 2012-11-22
 
-clear;
+clear;clc;
 %% 打开debug模式
 debug_on_warning (1);
 
 %% ==================== 参数配置 ====================
 %
+for i = 1:1000
 
 %global data;
 
@@ -76,7 +77,7 @@ global feature_uf = 1;
 %  0. 无debug信息输出
 %  1. 输出迭代次数和最后的图像
 %  2. 输出每步的迭代图像和鱼的运动类别选择
-global debug_level = 1;
+global debug_level = 0;
 
 %% 定义初始化方式
 %  1. 随机分布
@@ -88,5 +89,10 @@ global img_size = size(A);
 
 global data = reshape(A, img_size(1) * img_size(2), 3);
 
+close all;
 %% 调用函数
 af();
+fileName = sprintf("iter-%.4d.eps", i);
+print(fileName, "-deps","-color");
+printf("The %d-th result done\n", i);
+endfor

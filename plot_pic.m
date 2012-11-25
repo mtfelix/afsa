@@ -42,18 +42,18 @@ function [] = plot_pic (position, food, iter)
 	    endif
 	endfor
 	output(i, :) = center(min_idx, :);
-	printf("data %d DONE\n", i);
+%	printf("data %d DONE\n", i);
     endfor
     
-    subplot(1, 2, 1);
-    imagesc(A);
-    title('Original');
+%    subplot(1, 2, 1);
+%    imagesc(A);
+%    title('Original');
 
-    subplot(1, 2, 2);
+%    subplot(1, 2, 2);
     output_reshape = reshape(output, img_size(1), img_size(2), 3);
     imagesc(output_reshape);
 
     printf("Centers = %d\n", size(center)(1));
 
-    pause();
+%    pause();
 endfunction

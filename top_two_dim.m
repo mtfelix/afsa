@@ -76,5 +76,8 @@ global feature_uf = 0;
 %  2. 输出每步的迭代图像和鱼的运动类别选择
 global debug_level = 1;
 
+%% 定义初始分布方式
+global initial_type = 0;
+
 %% 调用函数
 af();

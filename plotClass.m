@@ -19,17 +19,17 @@ function [retCenter] = plotClass()
 	endif
       endif
     endfor
-    printf("This is the class of %d\n", num(iter,1));
+%    printf("This is the class of %d\n", num(iter,1));
     if size(plotData)(1) == 1
       %printf("Skiped\n");
       center = plotData(1,:);
     else
       center = maxData(1,:);
     endif
-%      plot(0,0,"-");
+%    plot(0,0,"-");
 %    hold on
-%      plot(data(:,1),data(:,2),'o');
-%      plot(10,10,"-");
+%    plot(data(:,1),data(:,2),'o');
+%    plot(10,10,"-");
 %    plot(position(:,1)', position(:,2)', "*");
 %    plot(plotData(:,1)', plotData(:,2)', "2*");
 %    plot(center(1),center(2),'r*');
