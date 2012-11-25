@@ -31,6 +31,7 @@ function [] = plot_pic (position, food, iter)
 
     center = plotClass();
     output = data;
+    idx = zeros(size(data)(1), 1);
     for i = 1 : size(data)(1)
 	min = (data(i,:) - center(1, :))*(data(i,:) - center(1, :))';
 	min_idx = 1;
@@ -41,10 +42,22 @@ function [] = plot_pic (position, food, iter)
 	       min_idx = j;
 	    endif
 	endfor
-	output(i, :) = center(min_idx, :);
+	idx(i,1) = min_idx;
+%	output(i, :) = center(min_idx, :);
 %	printf("data %d DONE\n", i);
     endfor
-    
+ 
+    value = zeros(size(center)(1), size(center)(2));
+    for i = 1 : size(center)(1)
+	check = (idx == i);
+	if sum(check) == 0
+	   continue;
+	endif
+	value(i, :) = sum(check .* data) ./ sum(check);	
+    endfor
+
+    output = value(idx,:);
+   
 %    subplot(1, 2, 1);
 %    imagesc(A);
 %    title('Original');

@@ -26,7 +26,7 @@ debug_on_warning (1);
 
 %% ==================== 参数配置 ====================
 %
-for i = 1:1000
+for i = 1:100
 
 %global data;
 
@@ -92,7 +92,7 @@ global data = reshape(A, img_size(1) * img_size(2), 3);
 close all;
 %% 调用函数
 af();
-fileName = sprintf("iter-%.4d.eps", i);
+fileName = sprintf("iter%.4d.eps",i);
 print(fileName, "-deps","-color");
 printf("The %d-th result done\n", i);
 endfor
