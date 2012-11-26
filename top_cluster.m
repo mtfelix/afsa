@@ -47,7 +47,7 @@ global jamming = 0.1;
 global fishNum = 16;
 
 %% maxIter是迭代的上限
-global maxIter = 10;
+global maxIter = 17;
 
 %% defineRange是定义域
 global defineRange = [0, 7.5; 0, 7.5];

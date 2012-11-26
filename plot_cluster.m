@@ -70,7 +70,6 @@ function [] = plot_cluster (position, food, iter)
   [result, num] = UF_Check();
   printf("Class = %d\n", size(result)(1));
 
-
 %% 以下代码检查fish被分类的情况, 并计算出中心位置
 %% NOTE:
 %  程序时间复杂度未经优化, 仅作debug使用

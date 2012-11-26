@@ -24,8 +24,14 @@ function [ret] = condition_cluster()
   global maxIter;        % 最大迭代次数上限
   global feature_uf;
 
+%% 以下部分仍然不能正确运作
+  persistent classNum;
+  persistent continueNum;
+
 %% ansBoardIndex仅在初始化时为-1
   if ansBoardIndex == -1
+    classNum = fishNum;
+    continueNum = 0;
     ret = 1;
 %% 若不为初始情况, 则需要考虑两个方面
 %  1. 迭代次数是否达到上限
@@ -34,7 +40,20 @@ function [ret] = condition_cluster()
     if iter < maxIter
 %% TODO:
 %  判断收敛方式
-      ret = 1;
+
+%% 以下部分仍然不能正确运作
+      [num, idx] = UF_Check();
+      if classNum == size(num)(1)
+	 continueNum += 1;
+      else
+	classNum = size(num)(1);
+      endif
+      if continueNum >= 4
+	ret = 0;
+      else
+
+	ret = 1;
+      endif
     else
 %% 若达到迭代上限, 则结束程序
       ret=0;
