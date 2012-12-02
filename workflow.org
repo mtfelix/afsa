@@ -77,7 +77,7 @@
    便调用调试
    Finished on [2012-11-25]
    Done by reAsOn & LaySent
-** TODO 聚类情况中的算法收敛判断
+** TODO 聚类情况中的算法收敛判断    
    目前想到可行的两种方式:
    1. 当类的数量大体不变时结束
       Note:
@@ -93,6 +93,11 @@
       行就结束循环的问题)
 
    2. 当类的最大值大体不变时结束
+
+*** DONE 修复了UF中的一个BUG
+    NOTE:
+    修复BUG后发现, 实际只需要大约两步的UF处理就可以得到最终的分类数(当然需要在迭代
+    次数较高的情况下使用UF)
 * org-mode相关设置
 #+STARUP: overview
 #+STARUP: hidestars
