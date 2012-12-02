@@ -42,18 +42,19 @@ function [ret] = condition_cluster()
 %  判断收敛方式
 
 %% 以下部分仍然不能正确运作
-      [num, idx] = UF_Check();
-      if classNum == size(num)(1)
-	 continueNum += 1;
-      else
-	classNum = size(num)(1);
-      endif
-      if continueNum >= 4
-	ret = 0;
-      else
-
-	ret = 1;
-      endif
+#      [num, idx] = UF_Check();
+#      if classNum == size(num)(1)
+#	 continueNum += 1;
+#      else
+#	classNum = size(num)(1);
+#      endif
+#      if continueNum >= 4
+#	ret = 0;
+#      else
+#
+#	ret = 1;
+#      endif
+       ret = 1;
     else
 %% 若达到迭代上限, 则结束程序
       ret=0;

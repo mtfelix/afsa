@@ -97,7 +97,7 @@ function [f, thisFish] = follow (pos)
 %% ========== 符合要求, 执行follow ==========
 %  1. 合并集合  
       if feature_uf
-	UF_Union(pos, j);
+	UF_Union(j, pos);
       endif
 
 %  2. 连续prey的次数清零

@@ -6,6 +6,15 @@ function [] = UF_Break(p)
 %% ========== 声明全局变量 ==========
 %
   global unionFind;
+  global iter;
+  global maxIter;
+
+%% ========== 说明 ==========
+%  见UF_Union的说明
+%
+  if iter < maxIter - 2
+     return;
+  endif
 
 %% ========== 说明(存疑) ==========
 %  此处如果unionFind(p) == p, 说明p是树的顶端值
