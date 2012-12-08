@@ -27,6 +27,9 @@ debug_on_warning (1);
 %% ==================== 参数配置 ====================
 %
 
+%% 添加文件路径
+addpath("af_func/", "food_func/", "plot_func/", "uf_func/", "condition_func");
+
 %global data;
 
 %% tryNUmber表示prey执行的最高次数
@@ -58,8 +61,8 @@ global gFoodCount = 0;
 %% ========== 定义调用方式 ==========
 %
 %% 定义使用的food函数
-%global getFood = @peaks_func;
-global getFood = @cluster_food;
+%global getFood = @food_peaks;
+global getFood = @food_cluster;
 
 %% 定义使用的plot函数
 %global plotFigure = @plot_two_dim;

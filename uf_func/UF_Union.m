@@ -18,7 +18,7 @@ function [] = UF_Union(p, q)
 %  更为方便直接
 %  这里为真正的union留了两步
 %
-  if iter < maxIter - 2
+  if iter < maxIter - 15;
      return;
 %    UF_Break(p);
 %    UF_Break(q);

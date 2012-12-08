@@ -14,7 +14,6 @@
 ## You should have received a copy of the GNU General Public License
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
-n
 ## top_template
 
 ## Author: reAsOn <reason@For-Napkin>
@@ -26,6 +25,9 @@ debug_on_warning (1);
 
 %% ==================== 参数配置 ====================
 %
+
+%% 添加文件路径
+addpath("af_func/", "food_func/", "plot_func/", "uf_func/", "condition_func");
 
 %global data;
 

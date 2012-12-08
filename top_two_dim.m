@@ -27,6 +27,9 @@ debug_on_warning (1);
 %% ==================== 参数配置 ====================
 %
 
+%% 添加文件路径
+addpath("af_func/", "food_func/", "plot_func/", "uf_func/", "condition_func");
+
 %global data;
 
 %% tryNUmber表示prey执行的最高次数
