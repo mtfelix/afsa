@@ -50,7 +50,10 @@ global jamming = 0.1;
 global fishNum = 16;
 
 %% maxIter是迭代的上限
-global maxIter = 17;
+global maxIter = 50;
+
+%%
+global unionFindNum = 3;
 
 %% defineRange是定义域
 global defineRange = [0, 7.5; 0, 7.5];
@@ -73,6 +76,8 @@ global condition = @condition_cluster;
 
 %% 定义是否调用uf
 global feature_uf = 1;
+
+global maxPreyNum = 5;
 
 %% 定义debug级别
 %% ===== debug级别 =====

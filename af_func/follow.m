@@ -42,6 +42,7 @@ function [f, thisFish] = follow (pos)
   global fishNum;
   global feature_uf;
   global getFood;
+  global unionFindNum;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   thisFish = position(pos,:);
@@ -97,7 +98,9 @@ function [f, thisFish] = follow (pos)
 %% ========== 符合要求, 执行follow ==========
 %  1. 合并集合  
       if feature_uf
-	UF_Union(j, pos);
+	for i = 1 : unionFindNum
+	  uf_union(j, pos, i);
+	endfor
       endif
 
 %  2. 连续prey的次数清零

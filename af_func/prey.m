@@ -35,6 +35,7 @@ function [f, thisFish] = prey(pos)
   global maxPreyNum
   global feature_uf;
   global getFood;
+  global unionFishNum;
 
 %% 获得需要计算的鱼的坐标以及所处位置的食物浓度
   f = food(pos);
@@ -58,12 +59,14 @@ function [f, thisFish] = prey(pos)
 %  同时, 将结果存储到返回值中并退出循环
 %
       if feature_uf
-	if stepsOfPrey(pos, 1) >= maxPreyNum
-	  UF_Break(pos);
-	  stepsOfPrey(pos, 1) = 0;
-	else
-	  stepsOfPrey(pos, 1) += 1;
-	endif
+	for i = 1:unionFishNum
+	  if stepsOfPrey(pos, i) >= unionFindNum%maxPreyNum
+	    uf_break(pos, i);
+	    stepsOfPrey(pos, i) = 0;
+	  else
+	    stepsOfPrey(pos, i) += 1;
+	  endif
+	endfor
       endif
 
 %% 保存这次的结果 

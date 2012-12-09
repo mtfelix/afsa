@@ -22,6 +22,9 @@
 
 function [] = plot_cluster (position, food, iter)
 
+  global unionFindNum;
+  global iter;
+
   if size(position)(2) == 1
     plot(position, food, "*");
     tmp = -10:0.1:10;
@@ -67,7 +70,7 @@ function [] = plot_cluster (position, food, iter)
 
 %% ========== 输出并查集的结果 ==========
 %
-  [result, num] = UF_Check();
+  [result, num] = uf_check(mod(iter, unionFindNum)+1);
   printf("Class = %d\n", size(result)(1));
 
 %% 以下代码检查fish被分类的情况, 并计算出中心位置

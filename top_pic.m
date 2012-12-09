@@ -30,7 +30,7 @@ debug_on_warning (1);
 %% 添加文件路径
 addpath("af_func/", "food_func/", "plot_func/", "uf_func/", "condition_func");
 
-for i = 1:100
+%for i = 1:100
 
 %global data;
 
@@ -50,7 +50,7 @@ global jamming = 0.1;
 global fishNum = 64;
 
 %% maxIter是迭代的上限
-global maxIter = 50;
+global maxIter = 500;
 
 %% defineRange是定义域
 global defineRange = [0, 255;
@@ -81,7 +81,9 @@ global feature_uf = 1;
 %  0. 无debug信息输出
 %  1. 输出迭代次数和最后的图像
 %  2. 输出每步的迭代图像和鱼的运动类别选择
-global debug_level = 0;
+global debug_level = 1;
+
+global unionFindNum = 4;
 
 %% 定义初始化方式
 %  1. 随机分布
@@ -99,4 +101,4 @@ af();
 fileName = sprintf("iter%.4d.eps",i);
 print(fileName, "-deps","-color");
 printf("The %d-th result done\n", i);
-endfor
+%endfor

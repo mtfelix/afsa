@@ -3,7 +3,9 @@ function [retCenter] = plotClass()
   global position;
   global food;
   global data;
-  [ret, num] = UF_Check();
+  global unionFindNum;
+  global iter;
+  [ret, num] = uf_check(mod(iter, unionFindNum) + 1);
   retCenter = [];
   for iter = 1:size(num)(1)
     center = zeros(1, size(position)(2));
@@ -11,7 +13,7 @@ function [retCenter] = plotClass()
     maxData = zeros(1, size(position)(2));
     maxFood = -1;   
     for i = 1:size(unionFind)(2)
-      if UF_Connected(num(iter,1), i)	 
+      if uf_connected(num(iter,1), i, unionFindNum)	 
 	plotData = [plotData; position(i,:)];
 	if maxFood < food(i)
 	   maxData = position(i,:);

@@ -121,6 +121,12 @@ if isempty(condition)
    condition = @condition_function;
 endif
 
+%%
+global unionFindNum;
+if isempty(unionFindNum)
+   unionFindNum = 2;
+endif
+
 %% ========== 初始化鱼群分布 ==========
 %  初始化的方式主要有两种
 %  一种是随机分布
@@ -203,7 +209,9 @@ global ansBoardIndex = -1;
 %
 global unionFind;
 if feature_uf
-  unionFind = UF_Create(fishNum);
+   for i = 1:unionFindNum
+     unionFind = [unionFind; uf_create(fishNum)];
+   endfor
 endif
 
 %% 为stepsOfPrey变量分配空间
@@ -211,7 +219,7 @@ endif
 %
 global stepsOfPrey;
 if feature_uf
-  stepsOfPrey = zeros(fishNum , 1);
+  stepsOfPrey = zeros(fishNum , unionFindNum);
 endif
 
 %% maxPreyNum指定了最多执行的prey次数
@@ -246,6 +254,10 @@ while(condition() == 1)
 %% ========== 依次计算每一条人工鱼 ==========
 %
   for i = 1:fishNum
+
+    unionFind(mod(iter - 1, unionFindNum) + 1, :) = uf_create(fishNum);
+    stepsOfPrey(:, mod(iter-1, unionFindNum) + 1) = \
+    zeros(fishNum, 1);
 
 %% 若为当前的最优解, 则该鱼不动
 %  此处改进参考了[1]
@@ -306,7 +318,7 @@ while(condition() == 1)
           tmpFood(i) = getFood(tmpPosition(i,:));
 	  if feature_uf
             if stepsOfPrey(i, 1) >= maxPreyNum
-              UF_Break(i);
+              uf_break(i);
               stepsOfPrey(i, 1) = 0;
             else
               stepsOfPrey(i, 1) += 1;
